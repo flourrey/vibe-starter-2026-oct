@@ -80,7 +80,6 @@ export const WordleModal: React.FC<WordleModalProps> = ({ isOpen, onClose }) => 
 
   if (!isOpen) return null;
 
-  // Keyboard rows
   const keys = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
@@ -88,13 +87,13 @@ export const WordleModal: React.FC<WordleModalProps> = ({ isOpen, onClose }) => 
   ];
 
   const getTileStatus = (char: string, index: number, guess: string) => {
-    if (guess[index] === solution[index]) return 'bg-emerald-600 text-white border-emerald-600';
-    if (solution.includes(char)) return 'bg-amber-500 text-white border-amber-500';
+    if (guess[index] === solution[index]) return 'bg-emerald-600 text-white border-emerald-600 shadow-xs';
+    if (solution.includes(char)) return 'bg-amber-500 text-white border-amber-500 shadow-xs';
     return 'bg-neutral-600 text-white border-neutral-600';
   };
 
   const getKeyStatus = (key: string) => {
-    let status = 'bg-neutral-200 text-neutral-800 hover:bg-neutral-300';
+    let status = 'bg-[#f5f5f7] hover:bg-neutral-200 text-neutral-800';
     for (const guess of guesses) {
       for (let i = 0; i < 5; i++) {
         if (guess[i] === key) {
@@ -112,52 +111,56 @@ export const WordleModal: React.FC<WordleModalProps> = ({ isOpen, onClose }) => 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-      <div className="bg-white max-w-md w-full rounded-md shadow-2xl border border-neutral-300 overflow-hidden flex flex-col max-h-[92vh]">
-        {/* Modal Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-nyt bg-[#fbf9f5]">
-          <div className="flex items-center gap-2">
-            <span className="w-6 h-6 bg-emerald-600 text-white text-xs font-bold rounded flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4">
+      <div className="bg-white/95 backdrop-blur-2xl max-w-md w-full rounded-3xl shadow-2xl border border-black/10 overflow-hidden flex flex-col max-h-[92vh] font-nyt-sans">
+        {/* Apple Style Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-black/[0.06]">
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-7 bg-emerald-600 text-white text-xs font-bold rounded-xl flex items-center justify-center shadow-xs">
               W
             </span>
-            <h3 className="font-serif font-black text-lg tracking-tight">Wordle</h3>
-            <span className="text-xs text-neutral-500 font-nyt-sans">No. 1214</span>
+            <div>
+              <h3 className="font-apple-display font-extrabold text-lg tracking-tight text-[#1d1d1f]">
+                Wordle
+              </h3>
+              <span className="text-[10px] text-neutral-400 font-medium">Daily Puzzle No. 1214</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={resetGame}
-              title="Play Again"
-              className="p-1 text-neutral-600 hover:text-black rounded transition-colors"
+              title="Reset Puzzle"
+              className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-600 hover:text-black transition-colors"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={onClose}
-              className="p-1 text-neutral-600 hover:text-black rounded transition-colors"
+              className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-600 hover:text-black transition-colors"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
         {/* Message Toast */}
         {message && (
-          <div className="bg-black text-white text-xs font-nyt-sans font-bold px-4 py-2 mx-auto mt-2 rounded shadow-lg text-center animate-bounce">
+          <div className="bg-black/90 backdrop-blur-md text-white text-xs font-medium px-4 py-2 mx-auto mt-2 rounded-full shadow-lg text-center animate-bounce">
             {message}
           </div>
         )}
 
         {/* Wordle Grid */}
         <div className="p-4 flex-1 flex flex-col items-center justify-center overflow-y-auto">
-          <div className="grid grid-rows-6 gap-1.5 w-64 max-w-full">
+          <div className="grid grid-rows-6 gap-2 w-64 max-w-full">
             {Array.from({ length: 6 }).map((_, rowIndex) => {
               const isCurrentRow = rowIndex === guesses.length;
               const guess = guesses[rowIndex] || '';
               return (
-                <div key={rowIndex} className="grid grid-cols-5 gap-1.5">
+                <div key={rowIndex} className="grid grid-cols-5 gap-2">
                   {Array.from({ length: 5 }).map((_, colIndex) => {
                     let char = '';
-                    let statusClasses = 'border-2 border-neutral-200 text-neutral-800 bg-white';
+                    let statusClasses = 'border border-black/[0.08] text-neutral-800 bg-[#f5f5f7]';
 
                     if (rowIndex < guesses.length) {
                       char = guess[colIndex] || '';
@@ -165,14 +168,14 @@ export const WordleModal: React.FC<WordleModalProps> = ({ isOpen, onClose }) => 
                     } else if (isCurrentRow) {
                       char = currentGuess[colIndex] || '';
                       if (char) {
-                        statusClasses = 'border-2 border-neutral-700 text-neutral-900 bg-white scale-105';
+                        statusClasses = 'border-2 border-neutral-900 text-neutral-900 bg-white scale-105';
                       }
                     }
 
                     return (
                       <div
                         key={colIndex}
-                        className={`aspect-square flex items-center justify-center font-bold text-xl uppercase transition-all duration-200 ${statusClasses}`}
+                        className={`aspect-square rounded-xl flex items-center justify-center font-bold text-xl uppercase transition-all duration-200 ${statusClasses}`}
                       >
                         {char}
                       </div>
@@ -184,17 +187,17 @@ export const WordleModal: React.FC<WordleModalProps> = ({ isOpen, onClose }) => 
           </div>
 
           {isGameOver && (
-            <div className="mt-4 p-3 bg-stone-100 rounded text-center w-full max-w-xs">
-              <div className="flex items-center justify-center gap-1.5 font-bold text-sm mb-1">
+            <div className="mt-4 p-4 bg-[#f5f5f7] rounded-2xl text-center w-full max-w-xs border border-black/[0.05]">
+              <div className="flex items-center justify-center gap-1.5 font-bold text-sm mb-1 text-neutral-900">
                 <Award className="w-4 h-4 text-emerald-600" />
                 <span>{hasWon ? 'Splendid!' : 'Next time!'}</span>
               </div>
               <p className="text-xs text-neutral-600">
-                The word was <strong className="text-black font-serif">{solution}</strong>.
+                The word was <strong className="text-black font-semibold">{solution}</strong>.
               </p>
               <button
                 onClick={resetGame}
-                className="mt-2 text-xs bg-black text-white font-bold py-1.5 px-3 rounded hover:bg-neutral-800 transition-colors"
+                className="mt-2 text-xs bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold py-1.5 px-4 rounded-full transition-all cursor-pointer shadow-xs"
               >
                 Play Again
               </button>
@@ -203,7 +206,7 @@ export const WordleModal: React.FC<WordleModalProps> = ({ isOpen, onClose }) => 
         </div>
 
         {/* On-Screen Keyboard */}
-        <div className="p-2 border-t border-neutral-200 bg-neutral-50">
+        <div className="p-3 border-t border-black/[0.04] bg-[#f5f5f7]/70">
           <div className="flex flex-col gap-1.5 max-w-md mx-auto">
             {keys.map((row, rIdx) => (
               <div key={rIdx} className="flex justify-center gap-1">
@@ -217,8 +220,8 @@ export const WordleModal: React.FC<WordleModalProps> = ({ isOpen, onClose }) => 
                         else if (k === 'DEL') handleDelete();
                         else handleCharInput(k);
                       }}
-                      className={`h-11 rounded text-xs font-bold transition-colors select-none ${
-                        isSpecial ? 'px-2.5 text-[10px]' : 'flex-1 min-w-[28px]'
+                      className={`h-11 rounded-xl text-xs font-bold transition-all select-none shadow-xs cursor-pointer ${
+                        isSpecial ? 'px-3 text-[10px]' : 'flex-1 min-w-[28px]'
                       } ${getKeyStatus(k)}`}
                     >
                       {k}

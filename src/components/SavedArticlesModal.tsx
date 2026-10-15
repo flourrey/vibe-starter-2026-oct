@@ -24,40 +24,46 @@ export const SavedArticlesModal: React.FC<SavedArticlesModalProps> = ({
   const savedArticles = articles.filter((a) => savedArticleIds.includes(a.id));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-      <div className="bg-white max-w-lg w-full rounded-md shadow-2xl border border-neutral-300 overflow-hidden flex flex-col max-h-[85vh] font-nyt-sans">
-        {/* Header */}
-        <div className="p-4 border-b border-nyt flex items-center justify-between bg-[#fbf9f5]">
-          <div className="flex items-center gap-2">
-            <Bookmark className="w-5 h-5 text-neutral-900 fill-current" />
-            <h3 className="font-serif font-black text-xl text-neutral-900">Your Reading List</h3>
-            <span className="text-xs bg-neutral-200 text-neutral-800 font-bold px-2 py-0.5 rounded-full">
-              {savedArticles.length}
-            </span>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4">
+      <div className="bg-white/95 backdrop-blur-2xl max-w-lg w-full rounded-3xl shadow-2xl border border-black/10 overflow-hidden flex flex-col max-h-[85vh] font-nyt-sans">
+        {/* Apple Style Header */}
+        <div className="p-5 border-b border-black/[0.06] flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-full bg-[#0071e3]/10 text-[#0071e3] flex items-center justify-center">
+              <Bookmark className="w-4 h-4 fill-current" />
+            </div>
+            <div>
+              <h3 className="font-apple-display font-bold text-lg text-neutral-900">
+                Reading List
+              </h3>
+              <p className="text-[11px] text-neutral-400">
+                {savedArticles.length} offline {savedArticles.length === 1 ? 'story' : 'stories'} saved
+              </p>
+            </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 text-neutral-500 hover:text-black rounded transition-colors"
+            className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-500 hover:text-black transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* List */}
-        <div className="p-4 flex-1 overflow-y-auto space-y-3">
+        <div className="p-4 flex-1 overflow-y-auto space-y-2.5">
           {savedArticles.length === 0 ? (
             <div className="text-center py-12 text-neutral-400">
-              <Bookmark className="w-8 h-8 mx-auto mb-2 opacity-40" />
-              <p className="text-sm font-medium">You haven't saved any stories yet.</p>
-              <p className="text-xs text-neutral-500 mt-1">
-                Click the bookmark icon on any article to save it for offline reading.
+              <Bookmark className="w-8 h-8 mx-auto mb-2 opacity-30" />
+              <p className="text-sm font-medium">Your Reading List is empty</p>
+              <p className="text-xs text-neutral-400 mt-1">
+                Save stories to read anytime, even while disconnected.
               </p>
             </div>
           ) : (
             savedArticles.map((article) => (
               <div
                 key={article.id}
-                className="p-3 border border-nyt rounded hover:border-black transition-colors flex items-start justify-between gap-3 group bg-white"
+                className="p-4 rounded-2xl bg-[#f5f5f7]/80 hover:bg-white hover:shadow-xs border border-black/[0.04] transition-all flex items-start justify-between gap-3 group"
               >
                 <div
                   className="flex-1 cursor-pointer"
@@ -66,24 +72,24 @@ export const SavedArticlesModal: React.FC<SavedArticlesModalProps> = ({
                     onClose();
                   }}
                 >
-                  <span className="text-[10px] uppercase font-bold text-red-800 tracking-wider">
+                  <span className="text-[10px] uppercase font-bold text-[#0071e3] tracking-wider">
                     {article.section}
                   </span>
-                  <h4 className="font-headline font-bold text-base leading-tight group-hover:underline text-neutral-900 mt-0.5">
+                  <h4 className="font-apple-display font-bold text-base leading-snug text-neutral-900 group-hover:text-[#0071e3] transition-colors mt-0.5">
                     {article.title}
                   </h4>
-                  <p className="text-xs text-neutral-500 font-serif line-clamp-1 mt-1">
+                  <p className="text-xs text-neutral-500 line-clamp-1 mt-1">
                     {article.summary}
                   </p>
-                  <div className="text-[11px] text-neutral-400 mt-1">
-                    {article.readTime} • By {article.byline}
+                  <div className="text-[11px] text-neutral-400 mt-2">
+                    {article.readTime} · By {article.byline}
                   </div>
                 </div>
 
                 <button
                   onClick={() => onRemoveSave(article.id)}
-                  title="Remove from saved"
-                  className="p-1.5 text-neutral-400 hover:text-red-700 transition-colors shrink-0"
+                  title="Remove from reading list"
+                  className="p-1.5 rounded-full text-neutral-400 hover:text-red-600 hover:bg-red-50 transition-colors shrink-0"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -91,14 +97,6 @@ export const SavedArticlesModal: React.FC<SavedArticlesModalProps> = ({
             ))
           )}
         </div>
-
-        {savedArticles.length > 0 && (
-          <div className="p-3 bg-neutral-50 border-t border-nyt text-right">
-            <span className="text-xs text-neutral-500">
-              Saved articles persist in your browser session.
-            </span>
-          </div>
-        )}
       </div>
     </div>
   );

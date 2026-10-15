@@ -102,7 +102,7 @@ export default function App() {
     : articles.filter((a) => a.section.toLowerCase() === activeSection.toLowerCase());
 
   return (
-    <div className="min-h-screen bg-white text-nyt-black font-body-serif selection:bg-neutral-200 flex flex-col">
+    <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-nyt-sans selection:bg-[#0071e3]/20 selection:text-[#0071e3] flex flex-col">
       {/* Site Header */}
       <SiteHeader
         currentEdition={currentEdition}
@@ -142,20 +142,20 @@ export default function App() {
         <div className="flex-1">
           {/* Section Filter Banner if active */}
           {activeSection !== 'All' && (
-            <div className="max-w-[1340px] mx-auto px-4 pt-4 pb-1">
-              <div className="bg-[#fbf9f5] border border-nyt p-3 rounded-xs flex items-center justify-between font-nyt-sans">
+            <div className="max-w-[1360px] mx-auto px-4 sm:px-6 pt-5 pb-1">
+              <div className="bg-white/80 backdrop-blur-xl border border-black/[0.06] p-3.5 px-5 rounded-2xl shadow-xs flex items-center justify-between font-nyt-sans">
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-neutral-600" />
+                  <Filter className="w-4 h-4 text-[#0071e3]" />
                   <span className="text-xs uppercase tracking-wider font-extrabold text-neutral-900">
-                    Showing Section: <strong className="text-red-800">{activeSection}</strong>
+                    Filtered by Department: <strong className="text-[#0071e3]">{activeSection}</strong>
                   </span>
                 </div>
                 <button
                   onClick={() => setActiveSection('All')}
-                  className="text-xs font-semibold text-neutral-600 hover:text-black hover:underline flex items-center gap-1"
+                  className="text-xs font-semibold text-neutral-600 hover:text-black flex items-center gap-1.5 bg-black/[0.04] hover:bg-black/[0.08] px-3 py-1.5 rounded-full transition-all cursor-pointer"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
-                  <span>Return to Full Front Page</span>
+                  <span>All Stories</span>
                 </button>
               </div>
             </div>

@@ -41,7 +41,7 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
       const newComment: CommentItem = {
         id: `c-user-${Date.now()}`,
         author: authorName.trim(),
-        location: location.trim() || 'New York, NY',
+        location: location.trim() || 'Cupertino, CA',
         timeAgo: 'Just now',
         content: newCommentText.trim(),
         upvotes: 1,
@@ -61,57 +61,64 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
       : article.comments;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-xs">
-      <div className="bg-white w-full max-w-md h-full shadow-2xl flex flex-col font-nyt-sans">
-        {/* Header */}
-        <div className="p-4 border-b border-nyt flex items-center justify-between bg-[#fbf9f5]">
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-md">
+      <div className="bg-white/95 backdrop-blur-2xl w-full max-w-md h-full shadow-2xl flex flex-col font-nyt-sans border-l border-black/10">
+        {/* Apple Style Header */}
+        <div className="p-5 border-b border-black/[0.06] flex items-center justify-between">
           <div>
-            <h3 className="font-serif font-black text-xl text-neutral-900">Comments</h3>
-            <p className="text-xs text-neutral-500 truncate max-w-xs">{article.title}</p>
+            <h3 className="font-apple-display font-extrabold text-xl text-neutral-900 tracking-tight">
+              Discussion
+            </h3>
+            <p className="text-xs text-neutral-400 truncate max-w-xs">{article.title}</p>
           </div>
           <button
             onClick={onClose}
-            className="p-1 text-neutral-500 hover:text-black rounded transition-colors"
+            className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-500 hover:text-black transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Tabs: Editor's Picks vs All */}
-        <div className="flex border-b border-nyt text-xs font-bold bg-neutral-50 px-4 pt-2">
-          <button
-            onClick={() => setTab('picks')}
-            className={`pb-2 px-3 border-b-2 transition-colors ${
-              tab === 'picks'
-                ? 'border-black text-black'
-                : 'border-transparent text-neutral-500 hover:text-black'
-            }`}
-          >
-            NYT Picks ({article.comments.filter((c) => c.isEditorPick).length})
-          </button>
-          <button
-            onClick={() => setTab('all')}
-            className={`pb-2 px-3 border-b-2 transition-colors ${
-              tab === 'all'
-                ? 'border-black text-black'
-                : 'border-transparent text-neutral-500 hover:text-black'
-            }`}
-          >
-            All Comments ({article.comments.length})
-          </button>
+        {/* Apple Segmented Pills for Tabs */}
+        <div className="p-4 border-b border-black/[0.04] bg-[#f5f5f7]/60">
+          <div className="flex bg-black/[0.05] p-0.5 rounded-full text-xs">
+            <button
+              onClick={() => setTab('picks')}
+              className={`flex-1 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                tab === 'picks'
+                  ? 'bg-white text-black shadow-xs'
+                  : 'text-neutral-500 hover:text-black'
+              }`}
+            >
+              Curated Picks ({article.comments.filter((c) => c.isEditorPick).length})
+            </button>
+            <button
+              onClick={() => setTab('all')}
+              className={`flex-1 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                tab === 'all'
+                  ? 'bg-white text-black shadow-xs'
+                  : 'text-neutral-500 hover:text-black'
+              }`}
+            >
+              All Comments ({article.comments.length})
+            </button>
+          </div>
         </div>
 
         {/* Comment List */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 divide-y divide-neutral-100">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {displayedComments.length === 0 ? (
             <div className="text-center py-12 text-neutral-400 text-xs">
-              No comments in this section yet. Be the first to share your perspective.
+              No comments in this section yet. Share your thoughts below.
             </div>
           ) : (
             displayedComments.map((comment) => {
               const isUpvoted = upvotedIds.includes(comment.id);
               return (
-                <div key={comment.id} className="pt-4 first:pt-0 space-y-2">
+                <div
+                  key={comment.id}
+                  className="p-4 rounded-2xl bg-[#f5f5f7]/80 border border-black/[0.03] space-y-2"
+                >
                   <div className="flex items-center justify-between text-xs">
                     <div>
                       <span className="font-bold text-neutral-900">{comment.author}</span>
@@ -121,24 +128,24 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
                   </div>
 
                   {comment.isEditorPick && (
-                    <div className="flex items-center gap-1 text-[10px] font-bold text-amber-700 uppercase tracking-wider">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-amber-600" />
-                      <span>NYT Pick</span>
+                    <div className="flex items-center gap-1 text-[10px] font-bold text-[#0071e3] uppercase tracking-wider">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#0071e3]" />
+                      <span>Curated by Editors</span>
                     </div>
                   )}
 
-                  <p className="font-serif text-sm text-neutral-800 leading-relaxed">
+                  <p className="text-xs leading-relaxed text-neutral-800 font-nyt-sans">
                     {comment.content}
                   </p>
 
-                  <div className="flex items-center justify-between pt-1 text-xs text-neutral-500">
+                  <div className="flex items-center justify-between pt-2 border-t border-black/[0.04] text-xs text-neutral-500">
                     <button
                       onClick={() => handleRecommend(comment.id)}
                       className={`flex items-center gap-1 text-[11px] hover:text-black transition-colors ${
-                        isUpvoted ? 'font-bold text-black' : ''
+                        isUpvoted ? 'font-bold text-[#0071e3]' : ''
                       }`}
                     >
-                      <ThumbsUp className={`w-3.5 h-3.5 ${isUpvoted ? 'fill-current text-black' : ''}`} />
+                      <ThumbsUp className={`w-3.5 h-3.5 ${isUpvoted ? 'fill-current text-[#0071e3]' : ''}`} />
                       <span>Recommend ({comment.upvotes + (isUpvoted ? 1 : 0)})</span>
                     </button>
                     <button className="hover:underline text-[11px] text-neutral-400">Reply</button>
@@ -150,9 +157,9 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
         </div>
 
         {/* Add comment form */}
-        <div className="p-4 border-t border-nyt bg-[#fbf9f5]">
+        <div className="p-4 border-t border-black/[0.06] bg-[#f5f5f7]">
           <h4 className="font-bold text-xs uppercase tracking-wider text-neutral-800 mb-2">
-            Share Your Thoughts
+            Add Your Voice
           </h4>
           <form onSubmit={handleSubmit} className="space-y-2">
             <div className="grid grid-cols-2 gap-2">
@@ -162,14 +169,14 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
                 value={authorName}
                 onChange={(e) => setAuthorName(e.target.value)}
                 required
-                className="text-xs p-2 border border-neutral-300 rounded bg-white focus:outline-none focus:border-black"
+                className="text-xs p-2.5 rounded-xl border border-black/10 bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/40"
               />
               <input
                 type="text"
                 placeholder="City, State"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="text-xs p-2 border border-neutral-300 rounded bg-white focus:outline-none focus:border-black"
+                className="text-xs p-2.5 rounded-xl border border-black/10 bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/40"
               />
             </div>
             <textarea
@@ -178,15 +185,15 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
               value={newCommentText}
               onChange={(e) => setNewCommentText(e.target.value)}
               required
-              className="w-full text-xs p-2 border border-neutral-300 rounded bg-white focus:outline-none focus:border-black resize-none"
+              className="w-full text-xs p-2.5 rounded-xl border border-black/10 bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/40 resize-none"
             />
             <button
               type="submit"
               disabled={isSubmitting || !newCommentText.trim() || !authorName.trim()}
-              className="w-full py-2 bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs rounded uppercase tracking-wider transition-colors disabled:opacity-40 flex items-center justify-center gap-1"
+              className="w-full py-2.5 bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold text-xs rounded-full uppercase tracking-wider transition-all disabled:opacity-40 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
             >
               <Send className="w-3.5 h-3.5" />
-              <span>Submit Comment</span>
+              <span>Post Comment</span>
             </button>
           </form>
         </div>

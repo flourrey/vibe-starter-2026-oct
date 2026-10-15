@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Bookmark, ChevronDown, User } from 'lucide-react';
+import { Search, Bookmark, User, Compass, Newspaper } from 'lucide-react';
 import { NewsSection } from '../types/news';
 
 interface SiteHeaderProps {
@@ -52,30 +52,28 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
   const tempDisplay = temperatureUnit === 'F' ? '68°F' : '20°C';
 
   return (
-    <header className="max-w-[1340px] mx-auto px-4 pt-2.5" data-purpose="global-header">
-      {/* Top Utility & Navigation Row */}
-      <div className="flex items-center justify-between pb-2 text-[11px] font-nyt-sans font-medium text-[#333] border-b border-nyt">
-        {/* Left: Navigation Drawer & Edition Switcher */}
-        <div className="flex items-center space-x-4">
-          {/* Search icon & button */}
+    <header className="sticky top-0 z-40 w-full glass-panel border-b border-black/[0.06] transition-all">
+      {/* Top Utility & Control Row */}
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4 text-[13px] font-nyt-sans">
+        {/* Left: Search & Segmented Edition Control */}
+        <div className="flex items-center gap-3">
+          {/* Apple-style search pill */}
           <button
             onClick={onOpenSearch}
-            aria-label="Search"
-            className="p-1 hover:text-black flex items-center gap-1.5 focus:outline-none cursor-pointer"
+            className="flex items-center gap-2 bg-black/[0.04] hover:bg-black/[0.07] text-[#1d1d1f] px-3.5 py-1.5 rounded-full transition-all text-xs font-medium cursor-pointer"
           >
-            <Search className="w-4 h-4 text-black stroke-[2.2]" />
-            <span className="hidden md:inline uppercase text-[10px] tracking-widest font-semibold">
-              Search
-            </span>
+            <Search className="w-3.5 h-3.5 text-neutral-500" />
+            <span className="hidden sm:inline">Search</span>
+            <kbd className="hidden md:inline text-[10px] bg-white/80 border border-black/10 px-1.5 py-0.2 rounded text-neutral-400 font-mono">
+              ⌘K
+            </kbd>
           </button>
 
-          <div className="h-3 w-px bg-gray-300 hidden sm:block"></div>
-
-          {/* Edition Selector Links */}
-          <nav aria-label="Editions" className="hidden sm:flex items-center space-x-3 text-[11px] text-[#555]">
+          {/* Apple segmented edition pill */}
+          <div className="hidden lg:flex items-center bg-black/[0.04] p-0.5 rounded-full text-xs">
             {[
               { id: 'US', label: 'U.S.' },
-              { id: 'International', label: 'International' },
+              { id: 'International', label: 'World' },
               { id: 'Canada', label: 'Canada' },
               { id: 'Espanol', label: 'Español' },
               { id: 'Chinese', label: '中文' },
@@ -83,135 +81,141 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
               <button
                 key={ed.id}
                 onClick={() => onSelectEdition(ed.id)}
-                className={`hover:text-black transition-colors ${
+                className={`px-3 py-1 rounded-full text-[11px] font-medium transition-all ${
                   currentEdition === ed.id
-                    ? 'font-bold text-black border-b border-black pb-0.5'
-                    : ''
+                    ? 'bg-white text-black shadow-xs font-semibold'
+                    : 'text-neutral-500 hover:text-black'
                 }`}
               >
                 {ed.label}
               </button>
             ))}
-          </nav>
+          </div>
         </div>
 
-        {/* Right: Subscriptions, Saved & Log In CTA */}
-        <div className="flex items-center space-x-2.5">
-          {/* Saved Articles Shortcut */}
+        {/* Center: Live Date & Weather Pills (Apple subtle capsule style) */}
+        <div className="hidden md:flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-1.5 bg-black/[0.03] px-3 py-1 rounded-full text-neutral-600">
+            <span className="font-semibold text-neutral-800">Wednesday, Oct 14</span>
+            <span className="text-neutral-400">·</span>
+            <button
+              onClick={onGoHome}
+              className="hover:text-black hover:underline cursor-pointer"
+            >
+              Today’s Edition
+            </button>
+          </div>
+
+          <button
+            onClick={onToggleTempUnit}
+            title="Click to toggle temperature scale"
+            className="flex items-center gap-1 bg-black/[0.03] hover:bg-black/[0.06] px-2.5 py-1 rounded-full text-neutral-700 transition-colors cursor-pointer"
+          >
+            <span className="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>
+            <span className="font-semibold">{tempDisplay}</span>
+            <span className="text-neutral-500">NYC</span>
+          </button>
+
+          <div className="flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-100 px-2.5 py-1 rounded-full text-[11px] font-medium">
+            <span>S&P 500</span>
+            <span className="font-bold">+0.42%</span>
+          </div>
+        </div>
+
+        {/* Right: Apple Actions (Saved, Subscribe, Account) */}
+        <div className="flex items-center gap-2">
+          {/* Saved Articles */}
           <button
             onClick={onOpenSaved}
-            className="flex items-center gap-1 text-[11px] font-bold text-neutral-700 hover:text-black px-2 py-1 transition-colors"
-            title="View Saved Stories"
+            className="flex items-center gap-1.5 bg-black/[0.04] hover:bg-black/[0.07] px-3 py-1.5 rounded-full text-xs font-medium text-neutral-800 transition-all cursor-pointer"
+            title="Your Reading List"
           >
             <Bookmark className={`w-3.5 h-3.5 ${savedCount > 0 ? 'fill-current text-black' : ''}`} />
             <span className="hidden sm:inline">Saved</span>
             {savedCount > 0 && (
-              <span className="text-[10px] bg-neutral-900 text-white rounded-full px-1.5 py-0.2">
+              <span className="w-4 h-4 rounded-full bg-black text-white text-[10px] flex items-center justify-center font-bold">
                 {savedCount}
               </span>
             )}
           </button>
 
-          {/* Subscribe CTA */}
+          {/* Apple Blue Pill CTA */}
           <button
             onClick={onOpenSubscribe}
-            className="bg-[#567b95] hover:bg-[#326891] text-white px-3 py-1.5 rounded-sm uppercase tracking-wider text-[10px] font-bold transition-colors cursor-pointer"
+            className="bg-[#0071e3] hover:bg-[#0077ed] text-white px-4 py-1.5 rounded-full text-xs font-semibold shadow-xs hover:shadow transition-all cursor-pointer whitespace-nowrap"
           >
-            {currentUser?.isSubscribed ? 'Subscribed' : 'Subscribe for $1/week'}
+            {currentUser?.isSubscribed ? 'Subscribed' : 'Subscribe $1/wk'}
           </button>
 
-          {/* Log In / User Account */}
+          {/* Account */}
           <button
             onClick={onOpenAccount}
-            className="border border-[#121212] hover:bg-neutral-100 text-black px-3 py-1.5 rounded-sm uppercase tracking-wider text-[10px] font-bold transition-colors cursor-pointer flex items-center gap-1"
+            className="w-8 h-8 rounded-full bg-black/[0.05] hover:bg-black/[0.08] flex items-center justify-center text-neutral-700 transition-all cursor-pointer shrink-0"
+            title="Account Profile"
           >
-            <User className="w-3 h-3" />
-            <span>{currentUser ? currentUser.email.split('@')[0] : 'Log In'}</span>
+            <User className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      {/* Date, Weather and Today's Paper Banner */}
-      <div className="flex items-center justify-between py-2 text-[11px] font-nyt-sans text-[#555] border-b border-nyt">
-        <div className="flex items-center space-x-3">
-          <span className="font-bold text-[#121212]">Wednesday, October 14, 2026</span>
-          <button
-            onClick={onGoHome}
-            className="hover:text-black hover:underline cursor-pointer"
-          >
-            Today’s Paper
-          </button>
+      {/* Brand Masthead Hero Row */}
+      <div className="border-t border-black/[0.04] bg-white/60">
+        <div className="max-w-[1360px] mx-auto px-4 py-3 md:py-4 flex flex-col md:flex-row items-center justify-between gap-2">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onGoHome}
+              className="text-left focus:outline-none cursor-pointer group"
+            >
+              <h1 className="font-masthead text-3xl sm:text-4xl md:text-5xl text-[#1d1d1f] tracking-tight leading-none group-hover:opacity-85 transition-opacity">
+                The New York Times
+              </h1>
+            </button>
+            <span className="hidden lg:inline text-[10px] font-bold uppercase tracking-widest text-neutral-400 border border-black/[0.08] px-2 py-0.5 rounded-full">
+              Apple News+
+            </span>
+          </div>
+
+          {/* Category Bar embedded right beside or below */}
+          <nav className="w-full md:w-auto overflow-x-auto py-1">
+            <ul className="flex items-center gap-1 text-[13px] font-nyt-sans font-medium">
+              {sections.map((section) => (
+                <li key={section}>
+                  <button
+                    onClick={() => {
+                      if (section === 'Games') {
+                        onOpenGames();
+                      } else {
+                        onSelectSection(section);
+                      }
+                    }}
+                    className={`px-3 py-1 rounded-full transition-all whitespace-nowrap cursor-pointer text-xs ${
+                      activeSection === section
+                        ? 'bg-neutral-900 text-white font-semibold'
+                        : 'text-neutral-600 hover:text-black hover:bg-black/[0.04]'
+                    }`}
+                  >
+                    {section}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
-        <div className="hidden md:flex items-center space-x-4 text-[11px]">
-          <button
-            onClick={onToggleTempUnit}
-            title="Click to toggle Celsius / Fahrenheit"
-            className="flex items-center gap-1.5 hover:text-black cursor-pointer"
-          >
-            <svg className="w-3.5 h-3.5 text-amber-500 fill-current" viewBox="0 0 20 20">
-              <circle cx="10" cy="10" fill="#f59e0b" r="5" />
-            </svg>
-            <strong>{tempDisplay}</strong> New York
-          </button>
-          <span className="text-neutral-400">|</span>
-          <span className="font-medium text-black">
-            Markets: S&P 500 <span className="text-emerald-700 font-semibold">+0.42%</span>
+      </div>
+
+      {/* Apple News Breaking Pill Notification */}
+      <div className="bg-[#f0f0f2]/90 border-t border-b border-black/[0.04] py-1.5 px-4 text-center text-xs font-nyt-sans text-neutral-700">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="bg-[#ff3b30] text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.2 rounded-full">
+            Top Story
           </span>
-        </div>
-      </div>
-
-      {/* Primary Iconic Newspaper Brand Masthead */}
-      <div className="text-center py-4 md:py-6">
-        <button
-          onClick={onGoHome}
-          title="The New York Times"
-          className="inline-block cursor-pointer focus:outline-none"
-        >
-          <h1 className="font-masthead text-5xl sm:text-6xl md:text-7xl lg:text-[80px] tracking-tight leading-none text-black select-none">
-            The New York Times
-          </h1>
-        </button>
-      </div>
-
-      {/* Horizontal Category Sub-navigation Menu */}
-      <nav aria-label="Main Sections" className="border-t border-b border-nyt py-2 px-1 overflow-x-auto">
-        <ul className="flex items-center justify-between min-w-[780px] text-[12px] font-nyt-sans tracking-tight text-[#121212] font-semibold">
-          {sections.map((section) => (
-            <li key={section}>
-              <button
-                onClick={() => {
-                  if (section === 'Games') {
-                    onOpenGames();
-                  } else {
-                    onSelectSection(section);
-                  }
-                }}
-                className={`flex items-center gap-0.5 hover:text-[#567b95] transition-colors pb-0.5 cursor-pointer ${
-                  activeSection === section ? 'text-[#326891] border-b-2 border-[#326891]' : ''
-                }`}
-              >
-                <span>{section}</span>
-                <span className="text-[9px] text-neutral-400">▾</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      {/* Urgent / Free to Read Alert Ribbon */}
-      <div className="py-2 border-b border-black text-center text-xs font-nyt-sans bg-stone-50 font-medium">
-        <span className="uppercase tracking-widest text-[10px] text-red-700 font-bold mr-2">
-          Top Stories
-        </span>
-        <span>
-          These major breaking developments are{' '}
-          <strong
+          <span className="text-neutral-600">Major breaking developments are curated for you ·</span>
+          <button
             onClick={onOpenSubscribe}
-            className="underline decoration-1 cursor-pointer hover:text-red-700"
+            className="text-[#0071e3] font-semibold hover:underline cursor-pointer"
           >
-            free to read
-          </strong>{' '}
-          with an account.
+            Explore All Features
+          </button>
         </span>
       </div>
     </header>

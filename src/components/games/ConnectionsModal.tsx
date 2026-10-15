@@ -47,7 +47,6 @@ export const ConnectionsModal: React.FC<ConnectionsModalProps> = ({ isOpen, onCl
       return;
     }
 
-    // Check if selectedWords match any group exactly
     const matchedGroup = CONNECTIONS_DATA.find((group) => {
       return (
         !solvedGroups.some((sg) => sg.category === group.category) &&
@@ -60,9 +59,8 @@ export const ConnectionsModal: React.FC<ConnectionsModalProps> = ({ isOpen, onCl
       setSolvedGroups(nextSolved);
       setWords((prev) => prev.filter((w) => !selectedWords.includes(w)));
       setSelectedWords([]);
-      showToast(`Correct! Category: ${matchedGroup.category}`);
+      showToast(`Group Solved: ${matchedGroup.category}`);
     } else {
-      // Check if "One away"
       let oneAway = false;
       for (const group of CONNECTIONS_DATA) {
         if (!solvedGroups.some((sg) => sg.category === group.category)) {
@@ -105,61 +103,65 @@ export const ConnectionsModal: React.FC<ConnectionsModalProps> = ({ isOpen, onCl
   const getGroupColor = (level: number) => {
     switch (level) {
       case 1:
-        return 'bg-amber-200 border-amber-300 text-neutral-900';
+        return 'bg-amber-100 border-amber-200 text-amber-950';
       case 2:
-        return 'bg-emerald-200 border-emerald-300 text-neutral-900';
+        return 'bg-emerald-100 border-emerald-200 text-emerald-950';
       case 3:
-        return 'bg-sky-200 border-sky-300 text-neutral-900';
+        return 'bg-sky-100 border-sky-200 text-sky-950';
       case 4:
-        return 'bg-purple-200 border-purple-300 text-neutral-900';
+        return 'bg-purple-100 border-purple-200 text-purple-950';
       default:
-        return 'bg-neutral-200';
+        return 'bg-neutral-100 text-neutral-800';
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-      <div className="bg-white max-w-lg w-full rounded-md shadow-2xl border border-neutral-300 overflow-hidden flex flex-col max-h-[92vh]">
-        {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-nyt bg-[#fbf9f5]">
-          <div className="flex items-center gap-2">
-            <span className="w-6 h-6 bg-yellow-400 text-black text-xs font-bold rounded flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4">
+      <div className="bg-white/95 backdrop-blur-2xl max-w-lg w-full rounded-3xl shadow-2xl border border-black/10 overflow-hidden flex flex-col max-h-[92vh] font-nyt-sans">
+        {/* Apple Style Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-black/[0.06]">
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-7 bg-amber-400 text-amber-950 text-xs font-bold rounded-xl flex items-center justify-center shadow-xs">
               ✦
             </span>
-            <h3 className="font-serif font-black text-lg tracking-tight">Connections</h3>
-            <span className="text-xs text-neutral-500 font-nyt-sans">Create four groups of four!</span>
+            <div>
+              <h3 className="font-apple-display font-extrabold text-lg tracking-tight text-[#1d1d1f]">
+                Connections
+              </h3>
+              <span className="text-[10px] text-neutral-400 font-medium">Create 4 thematic groups</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={resetGame}
               title="Reset"
-              className="p-1 text-neutral-600 hover:text-black rounded transition-colors"
+              className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-600 hover:text-black transition-colors"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={onClose}
-              className="p-1 text-neutral-600 hover:text-black rounded transition-colors"
+              className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-600 hover:text-black transition-colors"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
         {/* Toast */}
         {message && (
-          <div className="bg-black text-white text-xs font-nyt-sans font-bold px-4 py-2 mx-auto mt-2 rounded shadow-lg text-center animate-bounce">
+          <div className="bg-black/90 backdrop-blur-md text-white text-xs font-medium px-4 py-2 mx-auto mt-2 rounded-full shadow-lg text-center animate-bounce">
             {message}
           </div>
         )}
 
-        <div className="p-5 flex-1 flex flex-col justify-between overflow-y-auto">
-          {/* Solved Groups */}
-          <div className="space-y-2 mb-3">
+        <div className="p-6 flex-1 flex flex-col justify-between overflow-y-auto">
+          {/* Solved Groups in Apple Squircles */}
+          <div className="space-y-2.5 mb-3">
             {solvedGroups.map((group) => (
               <div
                 key={group.category}
-                className={`p-3 rounded text-center border font-nyt-sans ${getGroupColor(
+                className={`p-3.5 rounded-2xl text-center border font-nyt-sans shadow-xs ${getGroupColor(
                   group.level
                 )}`}
               >
@@ -172,7 +174,7 @@ export const ConnectionsModal: React.FC<ConnectionsModalProps> = ({ isOpen, onCl
           {/* Unsolved Words Grid */}
           {words.length > 0 ? (
             <div
-              className={`grid grid-cols-4 gap-2 transition-transform ${
+              className={`grid grid-cols-4 gap-2.5 transition-transform ${
                 shake ? 'translate-x-1 duration-75 text-red-500' : ''
               }`}
             >
@@ -182,10 +184,10 @@ export const ConnectionsModal: React.FC<ConnectionsModalProps> = ({ isOpen, onCl
                   <button
                     key={word}
                     onClick={() => toggleSelectWord(word)}
-                    className={`aspect-4/3 rounded font-nyt-sans text-xs sm:text-sm font-bold uppercase p-2 flex items-center justify-center text-center transition-all ${
+                    className={`aspect-4/3 rounded-2xl font-nyt-sans text-xs sm:text-sm font-bold uppercase p-2 flex items-center justify-center text-center transition-all cursor-pointer shadow-xs ${
                       isSelected
-                        ? 'bg-neutral-800 text-white scale-[0.98]'
-                        : 'bg-neutral-100 text-neutral-800 hover:bg-neutral-200'
+                        ? 'bg-[#1d1d1f] text-white scale-[0.98]'
+                        : 'bg-[#f5f5f7] text-[#1d1d1f] hover:bg-neutral-200'
                     }`}
                   >
                     {word}
@@ -194,20 +196,20 @@ export const ConnectionsModal: React.FC<ConnectionsModalProps> = ({ isOpen, onCl
               })}
             </div>
           ) : (
-            <div className="p-6 text-center bg-emerald-50 rounded border border-emerald-200">
-              <h4 className="font-serif font-bold text-lg text-emerald-900 mb-1">
+            <div className="p-6 text-center bg-emerald-50 rounded-2xl border border-emerald-100">
+              <h4 className="font-apple-display font-bold text-lg text-emerald-900 mb-1">
                 Outstanding!
               </h4>
-              <p className="text-xs text-emerald-800">
+              <p className="text-xs text-emerald-700">
                 You solved all four Connections categories!
               </p>
             </div>
           )}
 
           {/* Mistakes remaining */}
-          <div className="my-4 flex items-center justify-center gap-1.5 text-xs text-neutral-600 font-nyt-sans">
+          <div className="my-5 flex items-center justify-center gap-2 text-xs text-neutral-500 font-nyt-sans">
             <span>Mistakes remaining:</span>
-            <div className="flex gap-1">
+            <div className="flex gap-1.5">
               {Array.from({ length: 4 }).map((_, i) => (
                 <span
                   key={i}
@@ -219,27 +221,27 @@ export const ConnectionsModal: React.FC<ConnectionsModalProps> = ({ isOpen, onCl
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center justify-center gap-2 pt-2 border-t border-nyt">
+          {/* Action Buttons in Apple Pills */}
+          <div className="flex items-center justify-center gap-2.5 pt-2">
             <button
               onClick={handleShuffle}
               disabled={words.length === 0}
-              className="px-3 py-1.5 border border-neutral-800 rounded-full text-xs font-semibold hover:bg-neutral-100 flex items-center gap-1 disabled:opacity-40"
+              className="px-4 py-2 bg-[#f5f5f7] hover:bg-black/[0.08] rounded-full text-xs font-semibold flex items-center gap-1.5 disabled:opacity-40 transition-colors cursor-pointer"
             >
               <Shuffle className="w-3.5 h-3.5" />
-              Shuffle
+              <span>Shuffle</span>
             </button>
             <button
               onClick={handleDeselectAll}
               disabled={selectedWords.length === 0}
-              className="px-3 py-1.5 border border-neutral-800 rounded-full text-xs font-semibold hover:bg-neutral-100 disabled:opacity-40"
+              className="px-4 py-2 bg-[#f5f5f7] hover:bg-black/[0.08] rounded-full text-xs font-semibold disabled:opacity-40 transition-colors cursor-pointer"
             >
               Deselect All
             </button>
             <button
               onClick={handleSubmit}
               disabled={selectedWords.length !== 4 || mistakesRemaining <= 0}
-              className="px-4 py-1.5 bg-neutral-900 text-white rounded-full text-xs font-semibold hover:bg-neutral-800 disabled:opacity-40 disabled:hover:bg-neutral-900"
+              className="px-5 py-2 bg-[#0071e3] hover:bg-[#0077ed] text-white rounded-full text-xs font-bold shadow-xs disabled:opacity-40 disabled:hover:bg-[#0071e3] transition-all cursor-pointer"
             >
               Submit
             </button>

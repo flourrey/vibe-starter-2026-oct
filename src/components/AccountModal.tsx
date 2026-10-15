@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, User, Check, LogOut } from 'lucide-react';
+import { X, User, Check, LogOut, ShieldCheck } from 'lucide-react';
 
 interface AccountModalProps {
   isOpen: boolean;
@@ -28,43 +28,47 @@ export const AccountModal: React.FC<AccountModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 font-nyt-sans">
-      <div className="bg-white max-w-sm w-full rounded-md shadow-2xl border border-neutral-300 overflow-hidden">
-        {/* Header */}
-        <div className="p-4 border-b border-nyt flex items-center justify-between bg-[#fbf9f5]">
-          <span className="font-masthead text-xl text-black">The New York Times</span>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4 font-nyt-sans">
+      <div className="bg-white max-w-sm w-full rounded-3xl shadow-2xl border border-black/10 overflow-hidden">
+        {/* Apple Style Header */}
+        <div className="p-5 border-b border-black/[0.06] flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="font-masthead text-lg text-black">The New York Times</span>
+          </div>
           <button
             onClick={onClose}
-            className="p-1 text-neutral-500 hover:text-black rounded"
+            className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-500 hover:text-black transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="p-5">
+        <div className="p-6">
           {currentUser ? (
             <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-700 font-bold">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-neutral-800 to-black text-white flex items-center justify-center text-base font-bold shadow-xs">
                   {currentUser.email.slice(0, 1).toUpperCase()}
                 </div>
                 <div>
-                  <div className="font-bold text-sm text-neutral-900">{currentUser.email}</div>
-                  <div className="text-xs text-emerald-700 flex items-center gap-1">
-                    <Check className="w-3.5 h-3.5" />
-                    <span>{currentUser.isSubscribed ? 'All-Access Subscriber' : 'Standard Member'}</span>
+                  <div className="font-apple-display font-bold text-sm text-neutral-900 truncate max-w-[180px]">
+                    {currentUser.email}
+                  </div>
+                  <div className="text-xs text-[#0071e3] font-medium flex items-center gap-1 mt-0.5">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>{currentUser.isSubscribed ? 'Apple News+ Active' : 'Standard Member'}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-nyt space-y-2 text-xs text-neutral-700">
+              <div className="pt-3 border-t border-black/[0.06] space-y-2 text-xs text-neutral-600 font-nyt-sans">
                 <div className="flex justify-between py-1">
-                  <span>Edition</span>
-                  <span className="font-semibold text-black">U.S. Edition</span>
+                  <span>Region & Edition</span>
+                  <span className="font-semibold text-neutral-900">U.S. Edition</span>
                 </div>
                 <div className="flex justify-between py-1">
-                  <span>Delivery Method</span>
-                  <span className="font-semibold text-black">Digital Portal</span>
+                  <span>Device Sync</span>
+                  <span className="font-semibold text-emerald-700">iCloud Synced</span>
                 </div>
               </div>
 
@@ -73,42 +77,39 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                   onLogout();
                   onClose();
                 }}
-                className="w-full mt-4 py-2 border border-neutral-300 text-neutral-700 hover:text-black hover:border-black font-semibold text-xs rounded transition-colors flex items-center justify-center gap-1.5"
+                className="w-full mt-4 py-2.5 rounded-full border border-black/10 hover:bg-black/[0.04] text-neutral-800 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span>Log Out</span>
+                <span>Sign Out</span>
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <h3 className="font-headline font-bold text-xl text-neutral-900">
-                  Log in to your NYTimes account
+                <h3 className="font-apple-display font-bold text-xl text-neutral-900 tracking-tight">
+                  Sign in with Apple ID
                 </h3>
                 <p className="text-xs text-neutral-500 mt-1">
-                  Enter your email to sign in or create an account.
+                  Access your reading history, preferences, and saved articles.
                 </p>
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1">
-                  Email Address
-                </label>
                 <input
                   type="email"
                   required
-                  placeholder="yeohjoern@gmail.com"
+                  placeholder="name@icloud.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full text-xs p-2.5 border border-neutral-300 rounded focus:outline-none focus:border-black"
+                  className="w-full text-xs p-3 rounded-xl border border-black/10 bg-[#f5f5f7] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/40"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-2.5 bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider rounded transition-colors"
+                className="w-full py-3 bg-[#1d1d1f] hover:bg-black text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-md transition-colors cursor-pointer"
               >
-                Continue with Email
+                Continue with Apple
               </button>
             </form>
           )}

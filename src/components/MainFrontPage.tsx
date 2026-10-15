@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquare, Bookmark } from 'lucide-react';
+import { MessageSquare, Bookmark, ArrowUpRight, TrendingUp, Cpu, Activity } from 'lucide-react';
 import { Article } from '../types/news';
 
 interface MainFrontPageProps {
@@ -17,7 +17,6 @@ export const MainFrontPage: React.FC<MainFrontPageProps> = ({
   onToggleSave,
   onOpenSection,
 }) => {
-  // Find specific articles by ID or index
   const heroArticle = articles.find((a) => a.id === 'ukraine-exposure-satellite-russia') || articles[0];
   const trumpWomenArticle = articles.find((a) => a.id === 'high-ranking-women-trump-admin') || articles[1];
   const guilfoyleArticle = articles.find((a) => a.id === 'steep-rise-sudden-fall-kimberly-guilfoyle') || articles[2];
@@ -35,71 +34,75 @@ export const MainFrontPage: React.FC<MainFrontPageProps> = ({
   const popeLeoArticle = articles.find((a) => a.id === 'health-science-lung-cancer-therapy-pope-leo') || articles[14];
 
   return (
-    <main className="max-w-[1340px] mx-auto px-4 py-5" data-purpose="primary-news-grid">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+    <main className="max-w-[1360px] mx-auto px-4 sm:px-6 py-6" data-purpose="primary-news-grid">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* ======================================================== */}
-        {/* LEFT COLUMN: Secondary Lead Stories (3 cols)              */}
+        {/* LEFT COLUMN: Apple News Editorial Cards (3 cols)         */}
         {/* ======================================================== */}
-        <section aria-label="Lead Side Stories" className="lg:col-span-3 space-y-6 lg:border-r lg:border-nyt lg:pr-6">
+        <section aria-label="Lead Side Stories" className="lg:col-span-3 space-y-4">
           {/* Story 1: High Ranking Women */}
           {trumpWomenArticle && (
-            <article className="space-y-2.5 pb-5 border-b border-nyt relative group">
-              <div className="flex items-start justify-between gap-2">
-                <h2
-                  onClick={() => onSelectArticle(trumpWomenArticle)}
-                  className="font-headline text-2xl font-bold leading-tight hover:text-[#555] cursor-pointer"
-                >
-                  {trumpWomenArticle.title}
-                </h2>
+            <article className="apple-card p-5 group relative">
+              <div className="flex items-center justify-between gap-2 mb-2.5">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#ff3b30] bg-red-50 px-2 py-0.5 rounded-full">
+                  Politics
+                </span>
                 <button
                   onClick={(e) => onToggleSave(trumpWomenArticle.id, e)}
-                  title={savedArticleIds.includes(trumpWomenArticle.id) ? 'Saved' : 'Save article'}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 text-neutral-400 hover:text-black shrink-0"
+                  title={savedArticleIds.includes(trumpWomenArticle.id) ? 'Saved' : 'Save story'}
+                  className="p-1 rounded-full text-neutral-400 hover:text-black hover:bg-black/[0.05] transition-colors"
                 >
                   <Bookmark
                     className={`w-3.5 h-3.5 ${
-                      savedArticleIds.includes(trumpWomenArticle.id) ? 'fill-current text-black opacity-100' : ''
+                      savedArticleIds.includes(trumpWomenArticle.id)
+                        ? 'fill-current text-[#0071e3]'
+                        : ''
                     }`}
                   />
                 </button>
               </div>
+
+              <h2
+                onClick={() => onSelectArticle(trumpWomenArticle)}
+                className="font-apple-display text-xl font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
+              >
+                {trumpWomenArticle.title}
+              </h2>
               <p
                 onClick={() => onSelectArticle(trumpWomenArticle)}
-                className="text-[14px] leading-snug text-neutral-700 cursor-pointer"
+                className="text-[13px] leading-relaxed text-neutral-600 mt-2 cursor-pointer font-nyt-sans line-clamp-3"
               >
                 {trumpWomenArticle.summary}
               </p>
-              <div className="font-nyt-sans text-[11px] text-neutral-500 flex items-center gap-2">
+              <div className="text-[11px] text-neutral-400 mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between font-nyt-sans">
                 <span>{trumpWomenArticle.readTime}</span>
-                <span>•</span>
-                <span className="text-neutral-400">{trumpWomenArticle.byline}</span>
+                <span className="flex items-center gap-0.5 text-[#0071e3] font-medium group-hover:translate-x-0.5 transition-transform">
+                  Read <ArrowUpRight className="w-3 h-3" />
+                </span>
               </div>
             </article>
           )}
 
           {/* Story 2: Kimberly Guilfoyle Fall */}
           {guilfoyleArticle && (
-            <article className="space-y-2 pb-5 border-b border-nyt group">
+            <article className="apple-card p-5 group">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 block mb-2">
+                Diplomatic Desk
+              </span>
               <h3
                 onClick={() => onSelectArticle(guilfoyleArticle)}
-                className="font-headline text-lg font-bold leading-tight hover:text-neutral-600 cursor-pointer"
+                className="font-apple-display text-lg font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
               >
                 {guilfoyleArticle.title}
               </h3>
               <p
                 onClick={() => onSelectArticle(guilfoyleArticle)}
-                className="text-[13px] leading-snug text-neutral-600 cursor-pointer"
+                className="text-[13px] leading-relaxed text-neutral-600 mt-1.5 cursor-pointer font-nyt-sans line-clamp-2"
               >
                 {guilfoyleArticle.summary}
               </p>
-              <div className="font-nyt-sans text-[11px] text-neutral-500 flex items-center gap-1 font-semibold">
-                <svg className="w-3 h-3 text-neutral-400 inline" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    clipRule="evenodd"
-                    d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
-                    fillRule="evenodd"
-                  />
-                </svg>
+              <div className="text-[11px] text-neutral-400 mt-3 flex items-center gap-1 font-medium font-nyt-sans">
+                <MessageSquare className="w-3 h-3 text-neutral-400" />
                 <span>{guilfoyleArticle.commentsCount} comments</span>
               </div>
             </article>
@@ -107,394 +110,423 @@ export const MainFrontPage: React.FC<MainFrontPageProps> = ({
 
           {/* Story 3: Katie Zacharia / Press Secretary */}
           {zachariaArticle && (
-            <article className="space-y-2 pb-5 border-b border-nyt group">
+            <article className="apple-card p-5 group">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 block mb-2">
+                White House
+              </span>
               <h3
                 onClick={() => onSelectArticle(zachariaArticle)}
-                className="font-headline text-lg font-bold leading-tight hover:text-neutral-600 cursor-pointer"
+                className="font-apple-display text-lg font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
               >
                 {zachariaArticle.title}
               </h3>
               <p
                 onClick={() => onSelectArticle(zachariaArticle)}
-                className="text-[13px] leading-snug text-neutral-600 cursor-pointer"
+                className="text-[13px] leading-relaxed text-neutral-600 mt-1.5 cursor-pointer font-nyt-sans line-clamp-2"
               >
                 {zachariaArticle.summary}
               </p>
-              <div className="font-nyt-sans text-[11px] text-neutral-500">
+              <div className="text-[11px] text-neutral-400 mt-3 font-nyt-sans">
                 <span>{zachariaArticle.readTime}</span>
               </div>
             </article>
           )}
 
-          {/* Section: Cornell Rape Investigation */}
+          {/* Section: Cornell Campus Inquiry */}
           {cornellArticle && (
-            <article className="space-y-3 pt-2">
-              <div className="font-nyt-sans uppercase tracking-widest text-[10px] font-bold text-red-800">
-                {cornellArticle.kicker || 'Campus Inquiry'}
-              </div>
+            <article className="apple-card p-5 bg-gradient-to-br from-white to-[#fafafa] border border-black/[0.06]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#b3261e] bg-red-50 px-2 py-0.5 rounded-full inline-block mb-2">
+                Campus Inquiry
+              </span>
               <h3
                 onClick={() => onSelectArticle(cornellArticle)}
-                className="font-headline text-xl font-bold leading-snug hover:text-neutral-600 cursor-pointer"
+                className="font-apple-display text-lg font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
               >
                 {cornellArticle.title}
               </h3>
               <p
                 onClick={() => onSelectArticle(cornellArticle)}
-                className="text-[13px] leading-snug text-neutral-600 cursor-pointer"
+                className="text-[13px] leading-relaxed text-neutral-600 mt-1.5 cursor-pointer font-nyt-sans"
               >
                 {cornellArticle.summary}
               </p>
               {cornellArticle.subLinks && (
-                <ul className="font-nyt-sans text-[12px] space-y-1.5 text-neutral-800 font-semibold pt-1">
+                <div className="mt-3 pt-3 border-t border-black/[0.04] space-y-1.5 text-xs font-nyt-sans text-neutral-700">
                   {cornellArticle.subLinks.map((link, idx) => (
-                    <li
+                    <div
                       key={idx}
                       onClick={() => onSelectArticle(cornellArticle)}
-                      className="hover:underline cursor-pointer flex items-center gap-1.5"
+                      className="hover:text-[#0071e3] cursor-pointer flex items-center gap-1.5 transition-colors font-medium"
                     >
-                      <span className="w-1.5 h-1.5 bg-neutral-400 rounded-full inline-block" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-neutral-300" />
                       <span>{link}</span>
-                    </li>
+                    </div>
                   ))}
-                </ul>
+                </div>
               )}
             </article>
           )}
         </section>
 
         {/* ======================================================== */}
-        {/* CENTER COLUMN: Primary Breaking Headline & Image (6 cols) */}
+        {/* CENTER COLUMN: Apple Spotlight Bento Hero (6 cols)        */}
         {/* ======================================================== */}
-        <section aria-label="Hero Story and Deep Dives" className="lg:col-span-6 space-y-5 lg:border-r lg:border-nyt lg:pr-8">
+        <section aria-label="Hero Story and Deep Dives" className="lg:col-span-6 space-y-6">
           {heroArticle && (
-            <article className="space-y-3 pb-6 border-b border-nyt">
+            <article className="apple-card p-6 sm:p-7 bg-white relative overflow-hidden">
+              {/* Apple News Category & Read Time Capsule */}
+              <div className="flex items-center justify-between mb-3 text-xs font-nyt-sans">
+                <span className="bg-neutral-900 text-white font-bold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                  Spotlight Story
+                </span>
+                <span className="text-neutral-500 font-medium">{heroArticle.readTime}</span>
+              </div>
+
+              {/* Dominant Apple Display Headline */}
               <h2
                 onClick={() => onSelectArticle(heroArticle)}
-                className="font-headline text-3xl sm:text-4xl font-extrabold leading-[1.12] tracking-tight hover:text-neutral-700 cursor-pointer text-center md:text-left"
+                className="font-apple-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors leading-[1.14]"
               >
                 {heroArticle.title}
               </h2>
+
+              {/* Deck */}
               <p
                 onClick={() => onSelectArticle(heroArticle)}
-                className="text-[16px] leading-relaxed text-neutral-700 font-body-serif cursor-pointer"
+                className="text-[15px] leading-relaxed text-neutral-600 mt-3 font-nyt-sans cursor-pointer"
               >
                 {heroArticle.summary}
               </p>
-              <div className="font-nyt-sans text-[11px] text-neutral-500 flex items-center justify-between pb-1">
-                <span className="font-medium">By {heroArticle.byline}</span>
+
+              {/* Byline & Discussion */}
+              <div className="flex items-center justify-between mt-3 text-xs text-neutral-500 font-nyt-sans pb-4 border-b border-black/[0.04]">
+                <span className="font-semibold text-neutral-800">By {heroArticle.byline}</span>
                 <span
                   onClick={() => onSelectArticle(heroArticle)}
-                  className="font-semibold text-neutral-600 flex items-center gap-1 cursor-pointer hover:underline"
+                  className="flex items-center gap-1 text-neutral-600 hover:text-black cursor-pointer font-medium"
                 >
-                  <svg className="w-3.5 h-3.5 inline" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      clipRule="evenodd"
-                      d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
-                      fillRule="evenodd"
-                    />
-                  </svg>
+                  <MessageSquare className="w-3.5 h-3.5" />
                   1.1k comments
                 </span>
               </div>
 
-              {/* Lead Editorial Photography */}
+              {/* Lead Editorial Image with Apple continuous rounded corners */}
               <figure
                 onClick={() => onSelectArticle(heroArticle)}
-                className="pt-2 cursor-pointer group"
+                className="mt-4 cursor-pointer group"
               >
-                <div className="w-full overflow-hidden bg-neutral-100 border border-neutral-200">
+                <div className="w-full overflow-hidden rounded-2xl bg-neutral-100 border border-black/[0.06] shadow-xs">
                   <img
                     alt={heroArticle.title}
-                    className="w-full object-cover max-h-[380px] group-hover:scale-[1.01] transition-transform duration-300"
+                    className="w-full object-cover max-h-[380px] group-hover:scale-[1.015] transition-transform duration-500 ease-out"
                     src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"
                     onError={(e) => {
-                      // Fallback if network blocked
                       (e.target as HTMLImageElement).src =
                         'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80';
                     }}
                   />
                 </div>
-                <figcaption className="font-nyt-sans text-[11px] text-neutral-500 pt-1.5 flex justify-between">
+                <figcaption className="text-[11px] font-nyt-sans text-neutral-500 pt-2 flex justify-between px-1">
                   <span>{heroArticle.imageCredit}</span>
                   <span>{heroArticle.imageCaption}</span>
                 </figcaption>
               </figure>
 
-              {/* Russia-Ukraine Analysis Bullet Points */}
+              {/* Russia-Ukraine War Analysis in Apple Inset Card */}
               {heroArticle.highlightBullets && (
-                <div className="bg-stone-50 border-l-2 border-black p-3.5 mt-4 space-y-2">
-                  <span className="font-nyt-sans text-[11px] uppercase tracking-wider font-extrabold text-neutral-900 block">
-                    Russia-Ukraine War Analysis
+                <div className="mt-5 p-4 rounded-2xl bg-[#f5f5f7] border border-black/[0.03]">
+                  <span className="text-[11px] uppercase tracking-wider font-extrabold text-neutral-900 block mb-2 font-nyt-sans">
+                    War Analysis & Key Takeaways
                   </span>
-                  <ul className="text-[13px] space-y-1.5 text-neutral-800">
+                  <div className="space-y-2 text-xs font-nyt-sans text-neutral-800">
                     {heroArticle.highlightBullets.map((bullet, idx) => (
-                      <li
+                      <div
                         key={idx}
                         onClick={() => onSelectArticle(heroArticle)}
-                        className="hover:underline cursor-pointer"
+                        className="hover:text-[#0071e3] cursor-pointer flex items-start gap-2 transition-colors"
                       >
-                        • <strong>{bullet.boldPrefix}</strong> {bullet.text}
-                      </li>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-1.5 shrink-0" />
+                        <p className="leading-snug">
+                          <strong className="text-black font-semibold">{bullet.boldPrefix}</strong>{' '}
+                          {bullet.text}
+                        </p>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               )}
             </article>
           )}
 
-          {/* Two Column Sub-lead Split below Hero */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
-            {/* Story 1: Trump Diesel Deal */}
+          {/* Sub-leads Split in Two Apple Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {dieselArticle && (
-              <article className="space-y-1.5 pb-4 border-b md:border-b-0 border-nyt">
-                <h3
-                  onClick={() => onSelectArticle(dieselArticle)}
-                  className="font-headline text-lg font-bold leading-tight hover:text-neutral-700 cursor-pointer"
-                >
-                  {dieselArticle.title}
-                </h3>
-                <p
-                  onClick={() => onSelectArticle(dieselArticle)}
-                  className="text-[13px] leading-snug text-neutral-600 cursor-pointer"
-                >
-                  {dieselArticle.summary}
-                </p>
-                <div className="font-nyt-sans text-[11px] text-neutral-400">
-                  {dieselArticle.readTime}
+              <article className="apple-card p-5 group flex flex-col justify-between">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block mb-1.5">
+                    Energy Analysis
+                  </span>
+                  <h3
+                    onClick={() => onSelectArticle(dieselArticle)}
+                    className="font-apple-display text-base font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
+                  >
+                    {dieselArticle.title}
+                  </h3>
+                  <p
+                    onClick={() => onSelectArticle(dieselArticle)}
+                    className="text-xs text-neutral-600 mt-2 font-nyt-sans line-clamp-3 leading-relaxed"
+                  >
+                    {dieselArticle.summary}
+                  </p>
                 </div>
+                <span className="text-[11px] text-neutral-400 mt-3 block font-nyt-sans">
+                  {dieselArticle.readTime}
+                </span>
               </article>
             )}
 
-            {/* Story 2: US Intel Ukraine */}
             {usIntelArticle && (
-              <article className="space-y-1.5">
-                <h3
-                  onClick={() => onSelectArticle(usIntelArticle)}
-                  className="font-headline text-lg font-bold leading-tight hover:text-neutral-700 cursor-pointer"
-                >
-                  {usIntelArticle.title}
-                </h3>
-                <p
-                  onClick={() => onSelectArticle(usIntelArticle)}
-                  className="text-[13px] leading-snug text-neutral-600 cursor-pointer"
-                >
-                  {usIntelArticle.summary}
-                </p>
-                <div className="font-nyt-sans text-[11px] text-neutral-400">
-                  {usIntelArticle.readTime}
+              <article className="apple-card p-5 group flex flex-col justify-between">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block mb-1.5">
+                    Intelligence Desk
+                  </span>
+                  <h3
+                    onClick={() => onSelectArticle(usIntelArticle)}
+                    className="font-apple-display text-base font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
+                  >
+                    {usIntelArticle.title}
+                  </h3>
+                  <p
+                    onClick={() => onSelectArticle(usIntelArticle)}
+                    className="text-xs text-neutral-600 mt-2 font-nyt-sans line-clamp-3 leading-relaxed"
+                  >
+                    {usIntelArticle.summary}
+                  </p>
                 </div>
+                <span className="text-[11px] text-neutral-400 mt-3 block font-nyt-sans">
+                  {usIntelArticle.readTime}
+                </span>
               </article>
             )}
           </div>
 
-          {/* The Evening Briefing Feature Block */}
+          {/* The Evening Briefing Apple Card */}
           {eveningBriefingArticle && (
             <article
               onClick={() => onSelectArticle(eveningBriefingArticle)}
-              className="bg-[#f9f9f9] border border-nyt p-4 rounded-sm mt-4 cursor-pointer hover:bg-neutral-100 transition-colors"
+              className="apple-card p-6 bg-gradient-to-r from-neutral-900 to-[#1d1d1f] text-white cursor-pointer group"
             >
-              <div className="font-nyt-sans uppercase tracking-widest text-[10px] font-extrabold text-blue-900 mb-1">
-                The Evening Briefing
+              <div className="flex items-center gap-2 mb-2">
+                <span className="bg-white/20 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
+                  The Evening Briefing
+                </span>
+                <span className="text-neutral-400 text-xs">5 min read</span>
               </div>
-              <h3 className="font-headline text-xl font-bold leading-snug hover:text-neutral-700">
+              <h3 className="font-apple-display text-2xl font-bold tracking-tight text-white group-hover:text-amber-300 transition-colors">
                 {eveningBriefingArticle.title}
               </h3>
-              <p className="text-[13px] text-neutral-600 mt-1">
+              <p className="text-xs text-neutral-300 mt-2 font-nyt-sans leading-relaxed">
                 {eveningBriefingArticle.summary}
               </p>
-              <span className="font-nyt-sans text-[11px] text-neutral-500 font-semibold block mt-2">
-                5 min read • By {eveningBriefingArticle.byline}
-              </span>
+              <div className="mt-4 flex items-center justify-between text-xs text-neutral-400 font-nyt-sans">
+                <span>By {eveningBriefingArticle.byline}</span>
+                <span className="text-white font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  Listen & Read <ArrowUpRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
             </article>
           )}
         </section>
 
         {/* ======================================================== */}
-        {/* RIGHT COLUMN: Opinion, Tech, and Politics (3 cols)        */}
+        {/* RIGHT COLUMN: Opinion & Cupertino Deep Dives (3 cols)    */}
         {/* ======================================================== */}
-        <section aria-label="Opinion and Politics Column" className="lg:col-span-3 space-y-6">
-          {/* Election Dispatches Section */}
+        <section aria-label="Opinion and Politics Column" className="lg:col-span-3 space-y-4">
+          {/* Election Dispatches Apple Polling Card */}
           {texasSenateArticle && (
-            <article className="space-y-2 pb-5 border-b border-nyt">
-              <div className="flex items-center justify-between border-b border-black pb-1 mb-2">
-                <span className="font-nyt-sans uppercase tracking-wider text-[11px] font-bold text-black">
+            <article className="apple-card p-5 group">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-nyt-sans">
                   Election Dispatches
                 </span>
-                <span className="font-nyt-sans text-[10px] bg-red-100 text-red-800 px-1.5 py-0.5 font-bold uppercase rounded-sm">
+                <span className="bg-red-50 text-red-700 font-bold text-[10px] px-2 py-0.5 rounded-full border border-red-100 font-nyt-sans">
                   2026 Polls
                 </span>
               </div>
               <h3
                 onClick={() => onSelectArticle(texasSenateArticle)}
-                className="font-headline text-xl font-bold leading-tight hover:text-neutral-700 cursor-pointer"
+                className="font-apple-display text-lg font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
               >
                 {texasSenateArticle.title}
               </h3>
               <p
                 onClick={() => onSelectArticle(texasSenateArticle)}
-                className="text-[13px] leading-snug text-neutral-600 cursor-pointer"
+                className="text-[13px] leading-relaxed text-neutral-600 mt-1.5 cursor-pointer font-nyt-sans line-clamp-2"
               >
                 {texasSenateArticle.summary}
               </p>
               {texasSenateArticle.highlightBullets && (
-                <ul className="font-nyt-sans text-[12px] space-y-1.5 text-neutral-800 pt-1">
+                <div className="mt-3 pt-3 border-t border-black/[0.04] space-y-1.5 text-xs font-nyt-sans">
                   {texasSenateArticle.highlightBullets.map((item, idx) => (
-                    <li
+                    <div
                       key={idx}
                       onClick={() => onSelectArticle(texasSenateArticle)}
-                      className="hover:underline cursor-pointer"
+                      className="text-neutral-700 hover:text-black cursor-pointer leading-snug flex items-start gap-1.5"
                     >
-                      › <strong>{item.boldPrefix}</strong> {item.text}
-                    </li>
+                      <span className="text-[#0071e3] font-bold">›</span>
+                      <span>
+                        <strong className="text-black">{item.boldPrefix}</strong> {item.text}
+                      </span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               )}
             </article>
           )}
 
           {/* Tech & Artificial Intelligence */}
           {aiDinnerArticle && (
-            <article className="space-y-2 pb-5 border-b border-nyt">
-              <div className="border-b border-neutral-300 pb-1 mb-2 flex justify-between items-center">
-                <span className="font-nyt-sans uppercase tracking-wider text-[11px] font-bold text-neutral-800">
+            <article className="apple-card p-5 group">
+              <div className="flex items-center justify-between mb-2">
+                <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#0071e3] font-nyt-sans">
+                  <Cpu className="w-3.5 h-3.5" />
                   Artificial Intelligence
                 </span>
-                <span className="font-nyt-sans text-[10px] text-neutral-500 font-semibold">
-                  Tech Focus
-                </span>
+                <span className="text-[10px] text-neutral-400 font-medium">Tech Focus</span>
               </div>
               <h3
                 onClick={() => onSelectArticle(aiDinnerArticle)}
-                className="font-headline text-lg font-bold leading-tight hover:text-neutral-700 cursor-pointer"
+                className="font-apple-display text-lg font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
               >
                 {aiDinnerArticle.title}
               </h3>
               <p
                 onClick={() => onSelectArticle(aiDinnerArticle)}
-                className="text-[13px] leading-snug text-neutral-600 cursor-pointer"
+                className="text-[13px] leading-relaxed text-neutral-600 mt-1.5 cursor-pointer font-nyt-sans line-clamp-3"
               >
                 {aiDinnerArticle.summary}
               </p>
-              <div className="font-nyt-sans text-[11px] text-neutral-500 flex items-center justify-between">
+              <div className="text-[11px] text-neutral-400 mt-3 pt-2.5 border-t border-black/[0.04] flex items-center justify-between font-nyt-sans">
                 <span>By {aiDinnerArticle.byline}</span>
-                <span className="font-semibold text-neutral-700">
-                  {aiDinnerArticle.commentsCount} comments
-                </span>
+                <span>{aiDinnerArticle.commentsCount} comments</span>
               </div>
+
               {anthropicArticle && (
                 <div
                   onClick={() => onSelectArticle(anthropicArticle)}
-                  className="pt-2 text-[13px] border-t border-dashed border-nyt cursor-pointer group"
+                  className="mt-3 pt-3 border-t border-black/[0.06] cursor-pointer group/item"
                 >
-                  <span className="font-bold group-hover:underline block">
+                  <span className="font-bold text-xs group-hover/item:text-[#0071e3] transition-colors block leading-snug">
                     {anthropicArticle.title}
                   </span>
-                  <p className="text-[12px] text-neutral-500 mt-0.5">
+                  <span className="text-[11px] text-neutral-400 mt-0.5 block">
                     {anthropicArticle.readTime}
-                  </p>
+                  </span>
                 </div>
               )}
             </article>
           )}
 
-          {/* Opinion Column with Byline Headshots */}
-          <aside aria-label="Editorial Columnists" className="space-y-4 pt-1">
-            <div className="border-b-2 border-black pb-1 mb-2 flex items-center justify-between">
-              <h3 className="font-nyt-sans uppercase tracking-widest text-[12px] font-black text-black">
-                Opinion
+          {/* Opinion Column with Apple Squircle Columnist Avatars */}
+          <aside className="apple-card p-5 space-y-4">
+            <div className="flex items-center justify-between border-b border-black/[0.06] pb-2">
+              <h3 className="font-apple-display font-bold text-sm tracking-tight text-neutral-900">
+                Editorial & Opinion
               </h3>
               <button
                 onClick={() => onOpenSection('Opinion')}
-                className="font-nyt-sans text-[11px] text-neutral-500 hover:underline cursor-pointer"
+                className="text-xs text-[#0071e3] hover:underline cursor-pointer font-medium"
               >
                 See All ›
               </button>
             </div>
 
-            {/* Columnist 1: David Wallace-Wells */}
+            {/* Columnist 1 */}
             {opinion1 && (
               <div
                 onClick={() => onSelectArticle(opinion1)}
-                className="flex gap-3 pb-3 border-b border-nyt cursor-pointer group"
+                className="flex gap-3 cursor-pointer group pb-3 border-b border-black/[0.04]"
               >
-                <div className="flex-1 space-y-1">
-                  <span className="font-nyt-sans text-[11px] font-bold text-neutral-900 block">
+                <div className="flex-1 space-y-1 font-nyt-sans">
+                  <span className="text-xs font-bold text-neutral-900 block">
                     {opinion1.byline}
                   </span>
-                  <h4 className="font-headline text-[15px] font-bold leading-snug group-hover:text-neutral-700">
+                  <h4 className="font-apple-display text-[14px] font-bold leading-snug group-hover:text-[#0071e3] transition-colors">
                     {opinion1.title}
                   </h4>
-                  <span className="font-nyt-sans text-[10px] text-neutral-400">
+                  <span className="text-[11px] text-neutral-400 block">
                     {opinion1.commentsCount} comments
                   </span>
                 </div>
-                <div className="w-12 h-12 bg-neutral-200 rounded-full overflow-hidden flex-shrink-0 border border-neutral-300 flex items-center justify-center font-bold font-serif text-neutral-600">
+                <div className="w-10 h-10 rounded-2xl bg-[#0071e3]/10 text-[#0071e3] flex items-center justify-center font-bold font-apple-display text-xs shrink-0 ring-1 ring-black/[0.05]">
                   DW
                 </div>
               </div>
             )}
 
-            {/* Columnist 2: Carlos Lozada */}
+            {/* Columnist 2 */}
             {opinion2 && (
               <div
                 onClick={() => onSelectArticle(opinion2)}
-                className="flex gap-3 pb-3 border-b border-nyt cursor-pointer group"
+                className="flex gap-3 cursor-pointer group pb-3 border-b border-black/[0.04]"
               >
-                <div className="flex-1 space-y-1">
-                  <span className="font-nyt-sans text-[11px] font-bold text-neutral-900 block">
+                <div className="flex-1 space-y-1 font-nyt-sans">
+                  <span className="text-xs font-bold text-neutral-900 block">
                     {opinion2.byline}
                   </span>
-                  <h4 className="font-headline text-[15px] font-bold leading-snug group-hover:text-neutral-700">
+                  <h4 className="font-apple-display text-[14px] font-bold leading-snug group-hover:text-[#0071e3] transition-colors">
                     {opinion2.title}
                   </h4>
-                  <span className="font-nyt-sans text-[10px] text-neutral-400">
+                  <span className="text-[11px] text-neutral-400 block">
                     {opinion2.commentsCount} comments
                   </span>
                 </div>
-                <div className="w-12 h-12 bg-neutral-200 rounded-full overflow-hidden flex-shrink-0 border border-neutral-300 flex items-center justify-center font-bold font-serif text-neutral-600">
+                <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-700 flex items-center justify-center font-bold font-apple-display text-xs shrink-0 ring-1 ring-black/[0.05]">
                   CL
                 </div>
               </div>
             )}
 
-            {/* Columnist 3: Heather Kerr */}
+            {/* Columnist 3 */}
             {opinion3 && (
               <div
                 onClick={() => onSelectArticle(opinion3)}
-                className="flex gap-3 pb-1 cursor-pointer group"
+                className="flex gap-3 cursor-pointer group"
               >
-                <div className="flex-1 space-y-1">
-                  <span className="font-nyt-sans text-[11px] font-bold text-neutral-900 block">
+                <div className="flex-1 space-y-1 font-nyt-sans">
+                  <span className="text-xs font-bold text-neutral-900 block">
                     {opinion3.byline}
                   </span>
-                  <h4 className="font-headline text-[15px] font-bold leading-snug group-hover:text-neutral-700">
+                  <h4 className="font-apple-display text-[14px] font-bold leading-snug group-hover:text-[#0071e3] transition-colors">
                     {opinion3.title}
                   </h4>
-                  <span className="font-nyt-sans text-[10px] text-neutral-400">Guest Essay</span>
+                  <span className="text-[10px] text-neutral-400 font-medium">Guest Essay</span>
                 </div>
-                <div className="w-12 h-12 bg-neutral-200 rounded-full overflow-hidden flex-shrink-0 border border-neutral-300 flex items-center justify-center font-bold font-serif text-neutral-600">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center font-bold font-apple-display text-xs shrink-0 ring-1 ring-black/[0.05]">
                   HK
                 </div>
               </div>
             )}
           </aside>
 
-          {/* Pope Leo Health Update Section */}
+          {/* Health & Science Apple Inset Card */}
           {popeLeoArticle && (
             <article
               onClick={() => onSelectArticle(popeLeoArticle)}
-              className="bg-stone-50 p-3.5 border border-nyt space-y-2 cursor-pointer hover:bg-stone-100 transition-colors"
+              className="apple-card p-5 bg-[#fafafa] border border-black/[0.05] cursor-pointer group"
             >
-              <span className="font-nyt-sans text-[10px] uppercase tracking-wider font-extrabold text-neutral-700 block">
-                Health & Science
-              </span>
-              <h4 className="font-headline text-[16px] font-bold leading-snug">
+              <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-600 mb-1.5 font-nyt-sans">
+                <Activity className="w-3.5 h-3.5 text-rose-500" />
+                <span>Health & Science</span>
+              </div>
+              <h4 className="font-apple-display text-[15px] font-bold leading-snug group-hover:text-[#0071e3] transition-colors">
                 {popeLeoArticle.title}
               </h4>
-              <p className="text-[12px] text-neutral-600">
+              <p className="text-xs text-neutral-600 mt-1.5 font-nyt-sans line-clamp-2">
                 {popeLeoArticle.summary}
               </p>
-              <span className="font-nyt-sans text-[10px] text-neutral-400 block">
+              <span className="text-[11px] text-neutral-400 mt-2 block font-nyt-sans">
                 {popeLeoArticle.commentsCount} comments
               </span>
             </article>
