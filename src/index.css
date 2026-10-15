@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Newsreader', Georgia, serif;
+    color: #121212;
+    background-color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+.font-masthead {
+  font-family: 'UnifrakturCook', Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.font-headline {
+  font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+  line-height: 1.15;
+}
+
+.font-body-serif {
+  font-family: 'Newsreader', Georgia, serif;
+}
+
+.font-nyt-sans {
+  font-family: 'Libre Franklin', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.border-nyt {
+  border-color: #e2e2e2;
+}
+
+.double-rule-top {
+  border-top: 3px double #121212;
+}
+
+.double-rule-bottom {
+  border-bottom: 3px double #121212;
+}
+
+/* Custom scrollbars for menus and dialogs */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a3a3a3;
+}

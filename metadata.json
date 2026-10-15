@@ -1,0 +1,6 @@
+{
+  "name": "The New York Times Reader",
+  "description": "Authentic digital broadsheet experience featuring breaking news, multi-section dispatches, playable NYT Games, and deep editorial reader.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
