@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { X, Shuffle, Award } from 'lucide-react';
 import { SPELLING_BEE_DATA } from '../../data/gamesData';
 
 interface SpellingBeeModalProps {
@@ -35,15 +34,15 @@ export const SpellingBeeModal: React.FC<SpellingBeeModalProps> = ({ isOpen, onCl
   const handleSubmit = () => {
     const word = currentInput.toUpperCase();
     if (word.length < 4) {
-      showToast('Too short (minimum 4 letters)');
+      showToast('Error: Minimum 4 letters required');
       return;
     }
     if (!word.includes(centerLetter)) {
-      showToast(`Missing center letter (${centerLetter})`);
+      showToast(`Error: Center letter (${centerLetter}) missing`);
       return;
     }
     if (foundWords.includes(word)) {
-      showToast('Already found');
+      showToast('Word already discovered');
       return;
     }
 
@@ -51,95 +50,72 @@ export const SpellingBeeModal: React.FC<SpellingBeeModalProps> = ({ isOpen, onCl
       let points = word.length === 4 ? 1 : word.length;
       if (word === pangram) {
         points += 7;
-        showToast('PANGRAM! +14 points!');
+        showToast('*** PANGRAM! +14 PTS! ***');
       } else {
-        showToast(`Nice! +${points} points`);
+        showToast(`VALID WORD: +${points} pts`);
       }
 
       setFoundWords([word, ...foundWords]);
       setScore((prev) => prev + points);
       setCurrentInput('');
     } else {
-      showToast('Not in word list');
+      showToast('Not in dictionary');
     }
   };
 
   const getRank = (pts: number) => {
-    if (pts >= 40) return 'Genius';
-    if (pts >= 25) return 'Amazing';
-    if (pts >= 15) return 'Great';
-    if (pts >= 8) return 'Nice';
-    if (pts >= 4) return 'Solid';
-    if (pts >= 1) return 'Good';
-    return 'Beginner';
+    if (pts >= 40) return 'GENIUS';
+    if (pts >= 25) return 'AMAZING';
+    if (pts >= 15) return 'GREAT';
+    if (pts >= 8) return 'NICE';
+    if (pts >= 4) return 'SOLID';
+    if (pts >= 1) return 'GOOD';
+    return 'BEGINNER';
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4">
-      <div className="bg-white/95 backdrop-blur-2xl max-w-lg w-full rounded-3xl shadow-2xl border border-black/10 overflow-hidden flex flex-col max-h-[92vh] font-nyt-sans">
-        {/* Apple Style Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-black/[0.06]">
-          <div className="flex items-center gap-2.5">
-            <span className="w-7 h-7 bg-amber-400 text-amber-950 text-xs font-bold rounded-xl flex items-center justify-center shadow-xs">
-              ⬢
-            </span>
-            <div>
-              <h3 className="font-apple-display font-extrabold text-lg tracking-tight text-[#1d1d1f]">
-                Spelling Bee
-              </h3>
-              <span className="text-[10px] text-neutral-400 font-medium">Hive Anagrams</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-amber-900 bg-amber-100/70 px-3 py-1 rounded-full">
-              {getRank(score)} ({score} pts)
-            </span>
-            <button
-              onClick={onClose}
-              className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-600 transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 font-sans select-none">
+      <div className="win95-raised max-w-lg w-full shadow-2xl p-1 flex flex-col">
+        {/* Title Bar */}
+        <div className="win95-titlebar mb-1">
+          <span>SPELL_BEE.COM - [Honeycomb Anagram Engine v2.1]</span>
+          <button
+            onClick={onClose}
+            className="win95-btn w-4 h-4 flex items-center justify-center font-mono text-[9px] font-bold p-0 leading-none text-black"
+          >
+            ✕
+          </button>
         </div>
 
-        {/* Message Toast */}
+        {/* Toast */}
         {message && (
-          <div className="bg-black/90 backdrop-blur-md text-white text-xs font-medium px-4 py-2 mx-auto mt-2 rounded-full shadow-lg text-center animate-bounce">
+          <div className="bg-yellow-100 border border-black text-black text-xs font-typewriter font-bold px-3 py-1 m-2 text-center">
             {message}
           </div>
         )}
 
-        <div className="p-6 flex-1 flex flex-col md:flex-row gap-6 overflow-y-auto items-center md:items-start justify-between">
+        <div className="p-3 bg-[#c0c0c0] flex flex-col md:flex-row gap-4 items-center md:items-start justify-between">
           {/* Honeycomb pad */}
           <div className="flex flex-col items-center w-full max-w-xs">
-            {/* Input display */}
-            <div className="h-10 text-center font-apple-display font-extrabold text-2xl tracking-widest uppercase mb-4 flex items-center justify-center">
-              {currentInput.split('').map((char, i) => (
-                <span
-                  key={i}
-                  className={char === centerLetter ? 'text-amber-500 font-black' : 'text-neutral-900'}
-                >
-                  {char}
-                </span>
-              ))}
-              <span className="animate-pulse text-[#0071e3] font-normal">|</span>
+            {/* Input terminal */}
+            <div className="win95-sunken w-full h-9 bg-black text-green-400 font-pixel text-2xl flex items-center justify-center tracking-widest mb-3">
+              {currentInput || '_'}
             </div>
 
             {/* Honeycomb visual cluster */}
-            <div className="relative w-56 h-56 flex items-center justify-center my-2 select-none">
+            <div className="relative w-48 h-48 flex items-center justify-center my-2">
               <button
                 onClick={() => handleAddLetter(centerLetter)}
-                className="absolute z-10 w-16 h-16 bg-amber-400 hover:bg-amber-300 text-amber-950 font-black text-2xl rounded-full shadow-md flex items-center justify-center transition-transform active:scale-95 cursor-pointer"
+                className="absolute z-10 w-14 h-14 win95-btn bg-yellow-300 font-black text-2xl text-black border-2 border-black flex items-center justify-center"
               >
                 {centerLetter}
               </button>
 
               {outerLetters.map((letter, idx) => {
                 const angle = (idx * 60 - 30) * (Math.PI / 180);
-                const radius = 68;
+                const radius = 58;
                 const x = Math.round(radius * Math.cos(angle));
                 const y = Math.round(radius * Math.sin(angle));
 
@@ -148,7 +124,7 @@ export const SpellingBeeModal: React.FC<SpellingBeeModalProps> = ({ isOpen, onCl
                     key={letter}
                     onClick={() => handleAddLetter(letter)}
                     style={{ transform: `translate(${x}px, ${y}px)` }}
-                    className="absolute w-14 h-14 bg-[#f5f5f7] hover:bg-neutral-200 text-neutral-800 font-bold text-xl rounded-full shadow-xs flex items-center justify-center transition-all active:scale-95 border border-black/[0.04] cursor-pointer"
+                    className="absolute w-12 h-12 win95-btn font-bold text-xl text-black flex items-center justify-center"
                   >
                     {letter}
                   </button>
@@ -156,52 +132,56 @@ export const SpellingBeeModal: React.FC<SpellingBeeModalProps> = ({ isOpen, onCl
               })}
             </div>
 
-            {/* Controls in Apple Pills */}
-            <div className="flex items-center gap-2 mt-5">
+            {/* Action buttons */}
+            <div className="flex items-center gap-1.5 mt-3">
               <button
                 onClick={handleDelete}
-                className="px-4 py-2 bg-[#f5f5f7] hover:bg-black/[0.08] rounded-full text-xs font-semibold text-neutral-800 transition-colors cursor-pointer"
+                className="win95-btn px-3 py-1 text-xs font-bold"
               >
                 Delete
               </button>
               <button
                 onClick={handleShuffle}
-                className="p-2.5 bg-[#f5f5f7] hover:bg-black/[0.08] rounded-full text-neutral-700 transition-colors cursor-pointer"
-                title="Shuffle"
+                className="win95-btn px-3 py-1 text-xs font-bold"
               >
-                <Shuffle className="w-4 h-4" />
+                Shuffle
               </button>
               <button
                 onClick={handleSubmit}
-                className="px-5 py-2 bg-[#0071e3] hover:bg-[#0077ed] text-white rounded-full text-xs font-bold shadow-xs transition-colors cursor-pointer"
+                className="win95-btn px-4 py-1 text-xs font-bold text-[#000080]"
               >
-                Enter
+                [Enter]
               </button>
             </div>
           </div>
 
-          {/* Word List Pane */}
-          <div className="w-full md:w-48 bg-[#f5f5f7]/80 border border-black/[0.04] rounded-2xl p-4 text-xs font-nyt-sans">
-            <div className="flex items-center justify-between pb-2 border-b border-black/[0.06] font-bold text-neutral-900">
-              <span>Found ({foundWords.length})</span>
+          {/* Found Words List */}
+          <div className="w-full md:w-48 bg-white border border-black p-2 text-xs font-typewriter">
+            <div className="flex items-center justify-between pb-1 border-b border-black font-bold">
+              <span>FOUND ({foundWords.length})</span>
+              <span className="text-[#000080]">{score} PTS</span>
             </div>
-            <div className="max-h-48 overflow-y-auto mt-2 space-y-1">
+            <div className="max-h-48 overflow-y-auto mt-1 space-y-0.5">
               {foundWords.length === 0 ? (
-                <p className="text-neutral-400 italic text-center py-4">
-                  Words must be $\ge$ 4 letters and include center letter.
-                </p>
+                <div className="text-gray-400 italic text-[10px] text-center py-4">
+                  Type words containing yellow letter [{centerLetter}]
+                </div>
               ) : (
                 foundWords.map((w) => (
-                  <div key={w} className="flex justify-between uppercase font-medium text-neutral-700">
+                  <div key={w} className="flex justify-between font-mono text-[11px]">
                     <span>{w}</span>
-                    <span className="text-neutral-400 font-mono">
-                      {w === pangram ? '14' : w.length === 4 ? '1' : w.length}
-                    </span>
+                    <span>{w === pangram ? '14' : w.length === 4 ? '1' : w.length}</span>
                   </div>
                 ))
               )}
             </div>
           </div>
+        </div>
+
+        {/* Status Bar */}
+        <div className="win95-sunken px-2 py-0.5 text-[10px] font-typewriter text-black bg-[#c0c0c0] flex justify-between">
+          <span>Rank: [{getRank(score)}]</span>
+          <span>Center Key: [{centerLetter}]</span>
         </div>
       </div>
     </div>

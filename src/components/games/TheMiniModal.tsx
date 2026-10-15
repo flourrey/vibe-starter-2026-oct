@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { X, RotateCcw, CheckCircle2 } from 'lucide-react';
 
 interface TheMiniModalProps {
   isOpen: boolean;
@@ -144,14 +143,6 @@ export const TheMiniModal: React.FC<TheMiniModalProps> = ({ isOpen, onClose }) =
       if (allCorrect) {
         setIsSolved(true);
       }
-    } else if (e.key === 'ArrowRight' && c < 4 && !initialGrid[r][c + 1].isBlack) {
-      setActiveCell({ r, c: c + 1 });
-    } else if (e.key === 'ArrowLeft' && c > 0 && !initialGrid[r][c - 1].isBlack) {
-      setActiveCell({ r, c: c - 1 });
-    } else if (e.key === 'ArrowDown' && r < 4 && !initialGrid[r + 1][c].isBlack) {
-      setActiveCell({ r: r + 1, c });
-    } else if (e.key === 'ArrowUp' && r > 0 && !initialGrid[r - 1][c].isBlack) {
-      setActiveCell({ r: r - 1, c });
     }
   };
 
@@ -185,126 +176,113 @@ export const TheMiniModal: React.FC<TheMiniModalProps> = ({ isOpen, onClose }) =
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 font-sans select-none">
       <div
-        className="bg-white/95 backdrop-blur-2xl max-w-xl w-full rounded-3xl shadow-2xl border border-black/10 overflow-hidden flex flex-col max-h-[92vh] font-nyt-sans focus:outline-none"
+        className="win95-raised max-w-xl w-full shadow-2xl p-1 flex flex-col focus:outline-none"
         tabIndex={0}
         onKeyDown={handleKeyDown}
       >
-        {/* Apple Style Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-black/[0.06]">
-          <div className="flex items-center gap-2.5">
-            <span className="w-7 h-7 bg-sky-600 text-white text-xs font-bold rounded-xl flex items-center justify-center shadow-xs">
-              ⊞
+        {/* Title Bar */}
+        <div className="win95-titlebar mb-1">
+          <span>MINIXWD.EXE - [Crossword Puzzle Player 1.0]</span>
+          <div className="flex items-center gap-1">
+            <span className="font-mono text-yellow-300 text-xs px-1">
+              Time: {formatTimer(timerSeconds)}
             </span>
-            <div>
-              <h3 className="font-apple-display font-extrabold text-lg tracking-tight text-[#1d1d1f]">
-                The Mini Crossword
-              </h3>
-              <span className="text-[10px] text-neutral-400 font-medium">Bite-sized daily grid</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-semibold bg-[#f5f5f7] px-3 py-1 rounded-full text-neutral-700">
-              {formatTimer(timerSeconds)}
-            </span>
-            <button
-              onClick={handleRevealAll}
-              className="text-xs font-semibold text-[#0071e3] hover:underline cursor-pointer px-2"
-            >
-              Reveal
-            </button>
-            <button
-              onClick={handleReset}
-              className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-600 transition-colors"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
             <button
               onClick={onClose}
-              className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-600 transition-colors"
+              className="win95-btn w-4 h-4 flex items-center justify-center font-mono text-[9px] font-bold p-0 leading-none text-black"
             >
-              <X className="w-4 h-4" />
+              ✕
             </button>
           </div>
         </div>
 
+        {/* Menu Bar */}
+        <div className="bg-[#c0c0c0] px-2 py-0.5 border-b border-[#808080] text-xs flex justify-between text-black">
+          <div className="flex gap-2">
+            <span className="hover:underline cursor-pointer">Game</span>
+            <button onClick={handleRevealAll} className="hover:underline text-[#000080] font-bold">
+              Reveal Answers
+            </button>
+            <button onClick={handleReset} className="hover:underline">
+              Clear Board
+            </button>
+          </div>
+          <span className="font-typewriter text-[11px]">5x5 Broadsheet Grid</span>
+        </div>
+
         {/* Content */}
-        <div className="p-6 flex-1 flex flex-col md:flex-row gap-6 overflow-y-auto">
+        <div className="p-3 bg-[#c0c0c0] flex flex-col md:flex-row gap-4">
           {/* Grid Container */}
           <div className="flex flex-col items-center">
-            <div className="grid grid-cols-5 gap-1 bg-neutral-200 p-1.5 rounded-2xl w-64 h-64 select-none shadow-xs">
-              {initialGrid.map((row, r) =>
-                row.map((cell, c) => {
-                  const isActive = activeCell.r === r && activeCell.c === c;
-                  const isHighlighted =
-                    direction === 'across' ? activeCell.r === r : activeCell.c === c;
+            <div className="win95-sunken p-1 bg-black w-60 h-60">
+              <div className="grid grid-cols-5 gap-0.5 bg-black h-full">
+                {initialGrid.map((row, r) =>
+                  row.map((cell, c) => {
+                    const isActive = activeCell.r === r && activeCell.c === c;
+                    const isHighlighted =
+                      direction === 'across' ? activeCell.r === r : activeCell.c === c;
 
-                  if (cell.isBlack) {
-                    return <div key={`${r}-${c}`} className="bg-neutral-800 rounded-lg w-full h-full" />;
-                  }
+                    if (cell.isBlack) {
+                      return <div key={`${r}-${c}`} className="bg-neutral-900 w-full h-full" />;
+                    }
 
-                  return (
-                    <div
-                      key={`${r}-${c}`}
-                      onClick={() => handleCellClick(r, c)}
-                      className={`relative w-full h-full rounded-lg flex items-center justify-center cursor-pointer transition-all shadow-xs ${
-                        isActive
-                          ? 'bg-[#0071e3] text-white font-bold scale-105 z-10'
-                          : isHighlighted
-                          ? 'bg-[#0071e3]/15 text-neutral-900'
-                          : 'bg-white text-neutral-900 hover:bg-neutral-50'
-                      }`}
-                    >
-                      {cell.num && (
-                        <span
-                          className={`absolute top-1 left-1.5 text-[9px] font-bold ${
-                            isActive ? 'text-white/80' : 'text-neutral-400'
-                          }`}
-                        >
-                          {cell.num}
-                        </span>
-                      )}
-                      <span className="font-apple-display font-bold text-lg">
-                        {userLetters[r][c]}
-                      </span>
-                    </div>
-                  );
-                })
-              )}
+                    return (
+                      <div
+                        key={`${r}-${c}`}
+                        onClick={() => handleCellClick(r, c)}
+                        className={`relative w-full h-full flex items-center justify-center cursor-pointer font-bold font-mono text-lg ${
+                          isActive
+                            ? 'bg-yellow-300 text-black'
+                            : isHighlighted
+                            ? 'bg-blue-100 text-black'
+                            : 'bg-white text-black'
+                        }`}
+                      >
+                        {cell.num && (
+                          <span className="absolute top-0.5 left-1 text-[8px] font-sans font-bold text-gray-700 leading-none">
+                            {cell.num}
+                          </span>
+                        )}
+                        <span>{userLetters[r][c]}</span>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
             </div>
 
             {isSolved && (
-              <div className="mt-4 p-3 bg-emerald-50 text-emerald-900 text-xs font-semibold rounded-2xl flex items-center gap-2 border border-emerald-100 shadow-xs">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Solved in {formatTimer(timerSeconds)}! Splendid!</span>
+              <div className="mt-2 p-1.5 bg-yellow-200 border border-black text-black text-xs font-bold text-center w-60">
+                *** PUZZLE COMPLETED IN {formatTimer(timerSeconds)}! ***
               </div>
             )}
           </div>
 
           {/* Clues Pane */}
-          <div className="flex-1 space-y-4 text-xs font-nyt-sans">
+          <div className="flex-1 space-y-2 text-xs font-serif bg-white p-2 border border-black overflow-y-auto max-h-60">
             <div>
-              <h4 className="font-apple-display font-bold text-neutral-900 pb-1.5 border-b border-black/[0.06] mb-2">
-                Across
-              </h4>
-              <ul className="space-y-1.5 text-neutral-600">
+              <b className="font-sans text-[11px] text-[#000080] border-b border-black block pb-0.5 mb-1">
+                ACROSS
+              </b>
+              <ul className="space-y-1 text-black text-xs">
                 {clues.across.map((c) => (
-                  <li key={c.num} className="leading-snug">
-                    <strong className="text-black font-semibold">{c.num}.</strong> {c.clue}
+                  <li key={c.num}>
+                    <b>{c.num}.</b> {c.clue}
                   </li>
                 ))}
               </ul>
             </div>
 
             <div>
-              <h4 className="font-apple-display font-bold text-neutral-900 pb-1.5 border-b border-black/[0.06] mb-2">
-                Down
-              </h4>
-              <ul className="space-y-1.5 text-neutral-600">
+              <b className="font-sans text-[11px] text-[#000080] border-b border-black block pb-0.5 mb-1">
+                DOWN
+              </b>
+              <ul className="space-y-1 text-black text-xs">
                 {clues.down.map((c) => (
-                  <li key={c.num} className="leading-snug">
-                    <strong className="text-black font-semibold">{c.num}.</strong> {c.clue}
+                  <li key={c.num}>
+                    <b>{c.num}.</b> {c.clue}
                   </li>
                 ))}
               </ul>
@@ -312,8 +290,10 @@ export const TheMiniModal: React.FC<TheMiniModalProps> = ({ isOpen, onClose }) =
           </div>
         </div>
 
-        <div className="p-3 bg-[#f5f5f7]/60 border-t border-black/[0.04] text-center text-[11px] text-neutral-400 font-nyt-sans">
-          Click a cell or clue to toggle Across/Down · Type letters on your keyboard
+        {/* Status Bar */}
+        <div className="win95-sunken px-2 py-0.5 text-[10px] font-typewriter text-black bg-[#c0c0c0] flex justify-between">
+          <span>Click box to select · Type letters on keyboard</span>
+          <span>Mode: {direction.toUpperCase()}</span>
         </div>
       </div>
     </div>

@@ -2,82 +2,122 @@
 
 @layer base {
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Plus Jakarta Sans", "Inter", sans-serif;
-    color: #1d1d1f;
-    background-color: #f5f5f7;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Times New Roman', Times, serif;
+    color: #000000;
+    background-color: #c0c0c0;
+    -webkit-font-smoothing: auto;
   }
 }
 
-.font-apple-display {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", sans-serif;
-  letter-spacing: -0.022em;
+.font-pixel {
+  font-family: 'VT323', monospace;
 }
 
-.font-apple-serif {
-  font-family: 'Newsreader', Georgia, -apple-system, serif;
+.font-typewriter {
+  font-family: 'Courier Prime', 'Courier New', monospace;
 }
 
 .font-masthead {
-  font-family: 'UnifrakturCook', Georgia, serif;
+  font-family: 'UnifrakturCook', 'Times New Roman', serif;
   font-weight: 700;
   letter-spacing: -0.5px;
 }
 
 .font-headline {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", sans-serif;
-  letter-spacing: -0.025em;
-  line-height: 1.18;
+  font-family: 'Times New Roman', Georgia, serif;
 }
 
-.font-body-serif {
-  font-family: 'Newsreader', Georgia, serif;
+/* 1990s Windows 95 & Netscape 3D Bevel Styles */
+.win95-raised {
+  background-color: #c0c0c0;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #404040;
+  border-right: 2px solid #404040;
+  box-shadow: inset 1px 1px 0px #dfdfdf, inset -1px -1px 0px #808080;
 }
 
-.font-nyt-sans {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Plus Jakarta Sans", sans-serif;
-}
-
-/* Apple-style frosted glassmorphism */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-}
-
-.glass-panel-dark {
-  background: rgba(28, 28, 30, 0.88);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-}
-
-/* Apple squircle card with refined elevation */
-.apple-card {
+.win95-sunken {
   background-color: #ffffff;
-  border-radius: 1.25rem;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.03), 0 4px 14px -2px rgba(0, 0, 0, 0.04);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border-top: 2px solid #404040;
+  border-left: 2px solid #404040;
+  border-bottom: 2px solid #ffffff;
+  border-right: 2px solid #ffffff;
+  box-shadow: inset 1px 1px 0px #000000, inset -1px -1px 0px #dfdfdf;
 }
 
-.apple-card:hover {
-  box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
-  transform: translateY(-1.5px);
+.win95-btn {
+  background-color: #c0c0c0;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #404040;
+  border-right: 2px solid #404040;
+  box-shadow: inset 1px 1px 0px #dfdfdf, inset -1px -1px 0px #808080;
+  cursor: pointer;
+  user-select: none;
 }
 
-/* Apple custom sleek scrollbars */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+.win95-btn:active {
+  border-top: 2px solid #404040;
+  border-left: 2px solid #404040;
+  border-bottom: 2px solid #ffffff;
+  border-right: 2px solid #ffffff;
+  box-shadow: inset 1px 1px 0px #000000, inset -1px -1px 0px #dfdfdf;
+  padding-top: calc(0.25rem + 1px);
+  padding-left: calc(0.5rem + 1px);
 }
-::-webkit-scrollbar-track {
-  background: transparent;
+
+.win95-titlebar {
+  background: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+  color: #ffffff;
+  font-family: 'MS Sans Serif', Tahoma, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 3px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 9999px;
+
+.win95-titlebar-inactive {
+  background: linear-gradient(90deg, #808080 0%, #b5b5b5 100%);
+  color: #c0c0c0;
+  font-family: 'MS Sans Serif', Tahoma, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 3px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.3);
+
+.retro-link {
+  color: #0000ee;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.retro-link:visited {
+  color: #551a8b;
+}
+.retro-link:hover {
+  color: #ff0000;
+}
+.retro-link:active {
+  color: #ff0000;
+}
+
+/* 90s Marquee Ticker */
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
 }

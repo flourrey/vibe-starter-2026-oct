@@ -34,90 +34,72 @@ export const SearchModal: React.FC<SearchModalProps> = ({
     });
   }, [articles, query, selectedSection]);
 
-  const trendingTopics = [
-    'Ukraine War',
-    'Trump Administration',
-    'Artificial Intelligence',
-    'Texas Senate',
-    'Pope Leo',
-    'Cornell',
-  ];
-
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 backdrop-blur-md p-4 pt-16">
-      <div className="bg-white/95 backdrop-blur-2xl max-w-2xl w-full rounded-3xl shadow-2xl border border-black/10 overflow-hidden flex flex-col max-h-[80vh] font-nyt-sans">
-        {/* Apple Spotlight Style Search Input */}
-        <div className="p-4 px-5 border-b border-black/[0.06] flex items-center gap-3">
-          <Search className="w-5 h-5 text-neutral-400 shrink-0" />
-          <input
-            type="text"
-            placeholder="Search stories, dispatches, topics, authors..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            autoFocus
-            className="w-full text-base font-medium font-apple-display bg-transparent border-none focus:outline-none placeholder:text-neutral-400"
-          />
-          {query && (
-            <button
-              onClick={() => setQuery('')}
-              className="text-xs text-neutral-400 hover:text-black font-semibold"
-            >
-              Clear
-            </button>
-          )}
+    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 p-4 pt-16 font-sans select-none">
+      <div className="win95-raised max-w-xl w-full shadow-2xl p-1 flex flex-col max-h-[85vh]">
+        {/* Windows 95 Title Bar */}
+        <div className="win95-titlebar mb-1">
+          <div className="flex items-center gap-1.5">
+            <Search className="w-3.5 h-3.5 text-yellow-300" />
+            <span>Search Text Archives - [NYTimes Find Utility v1.2]</span>
+          </div>
           <button
             onClick={onClose}
-            className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-500 hover:text-black transition-colors"
+            className="win95-btn w-4 h-4 flex items-center justify-center font-mono text-[9px] font-bold p-0 leading-none text-black"
           >
-            <X className="w-4 h-4" />
+            ✕
           </button>
         </div>
 
-        {/* Section Filters */}
-        <div className="px-5 py-2.5 border-b border-black/[0.04] flex items-center gap-2 overflow-x-auto text-xs bg-[#f5f5f7]/60">
-          {['All', 'U.S.', 'World', 'Business', 'Opinion', 'Lifestyle'].map((sec) => (
-            <button
-              key={sec}
-              onClick={() => setSelectedSection(sec)}
-              className={`px-3 py-1 rounded-full font-medium transition-all shrink-0 ${
-                selectedSection === sec
-                  ? 'bg-neutral-900 text-white shadow-xs font-semibold'
-                  : 'bg-white/80 border border-black/[0.06] text-neutral-600 hover:text-black'
-              }`}
-            >
-              {sec}
-            </button>
-          ))}
-        </div>
-
-        {/* Results / Trending */}
-        <div className="p-5 flex-1 overflow-y-auto space-y-4">
-          {!query && (
-            <div className="mb-4">
-              <span className="text-[11px] uppercase font-bold tracking-wider text-neutral-400 block mb-2">
-                Trending In Spotlight
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {trendingTopics.map((topic) => (
-                  <button
-                    key={topic}
-                    onClick={() => setQuery(topic)}
-                    className="text-xs bg-[#f5f5f7] hover:bg-black/[0.06] text-neutral-800 px-3.5 py-1.5 rounded-full font-medium transition-colors"
-                  >
-                    {topic}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
-            {filteredArticles.length} Result{filteredArticles.length === 1 ? '' : 's'}
+        {/* Search Query Input */}
+        <div className="p-3 bg-[#c0c0c0] border-b border-[#808080] space-y-2 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="font-bold">Find What:</span>
+            <input
+              type="text"
+              placeholder="e.g. Ukraine, Trump, AI, Texas..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              autoFocus
+              className="win95-sunken flex-1 px-2 py-1 font-typewriter text-xs text-black bg-white focus:outline-none"
+            />
+            {query && (
+              <button
+                onClick={() => setQuery('')}
+                className="win95-btn px-2 py-1 text-xs"
+              >
+                Clear
+              </button>
+            )}
           </div>
 
-          <div className="space-y-2">
+          {/* Section Filter Buttons */}
+          <div className="flex items-center gap-1 pt-1 overflow-x-auto text-[11px]">
+            <span className="font-bold">In Section:</span>
+            {['All', 'U.S.', 'World', 'Business', 'Opinion', 'Lifestyle'].map((sec) => (
+              <button
+                key={sec}
+                onClick={() => setSelectedSection(sec)}
+                className={`win95-btn px-2 py-0.5 text-[10px] font-bold ${
+                  selectedSection === sec ? 'win95-sunken bg-white text-[#000080]' : ''
+                }`}
+              >
+                {sec}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Results List */}
+        <div className="p-3 bg-white flex-1 overflow-y-auto space-y-3 font-serif">
+          <div className="font-typewriter text-[11px] text-gray-600 border-b border-gray-300 pb-1 flex justify-between">
+            <span>Query Results: {filteredArticles.length} Document(s) Found</span>
+            <span>Sort: Relevance</span>
+          </div>
+
+          <div className="space-y-3">
             {filteredArticles.map((article) => (
               <div
                 key={article.id}
@@ -125,30 +107,34 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                   onSelectArticle(article);
                   onClose();
                 }}
-                className="p-3.5 rounded-2xl hover:bg-black/[0.04] cursor-pointer group transition-colors border border-transparent hover:border-black/[0.04]"
+                className="border-b border-gray-200 pb-2 cursor-pointer hover:bg-yellow-50 p-1"
               >
-                <div className="flex items-center gap-2 text-[11px] text-neutral-500 mb-1">
-                  <span className="font-bold uppercase tracking-wider text-[#0071e3]">
-                    {article.kicker || article.section}
-                  </span>
-                  <span>·</span>
-                  <span>{article.readTime}</span>
+                <div className="text-[10px] font-typewriter text-red-800 font-bold uppercase">
+                  [{article.kicker || article.section}] · {article.readTime}
                 </div>
-                <h4 className="font-apple-display text-base font-bold text-neutral-900 group-hover:text-[#0071e3] transition-colors leading-snug">
+                <h4 className="retro-link text-sm font-bold font-headline leading-tight mt-0.5">
                   {article.title}
                 </h4>
-                <p className="text-xs text-neutral-500 line-clamp-2 mt-1 font-nyt-sans">
+                <p className="text-xs text-gray-700 line-clamp-2 mt-1">
                   {article.summary}
                 </p>
-                <div className="text-[11px] text-neutral-400 mt-2 flex items-center justify-between">
-                  <span>By {article.byline}</span>
-                  <span className="flex items-center gap-1 font-semibold text-[#0071e3]">
-                    Read <ArrowRight className="w-3 h-3" />
-                  </span>
+                <div className="text-[10px] font-typewriter text-gray-500 mt-1 flex justify-between">
+                  <span>Author: {article.byline}</span>
+                  <span className="retro-link font-bold">[Load Document →]</span>
                 </div>
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Dialogue Box Action Footer */}
+        <div className="p-2 bg-[#c0c0c0] border-t border-[#808080] flex justify-end gap-2 text-xs">
+          <button
+            onClick={onClose}
+            className="win95-btn px-4 py-1 font-bold text-black"
+          >
+            [Close Utility]
+          </button>
         </div>
       </div>
     </div>

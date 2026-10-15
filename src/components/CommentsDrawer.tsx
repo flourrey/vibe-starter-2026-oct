@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ThumbsUp, Send, CheckCircle2 } from 'lucide-react';
+import { ThumbsUp, Send } from 'lucide-react';
 import { Article, CommentItem } from '../types/news';
 
 interface CommentsDrawerProps {
@@ -41,7 +41,7 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
       const newComment: CommentItem = {
         id: `c-user-${Date.now()}`,
         author: authorName.trim(),
-        location: location.trim() || 'Cupertino, CA',
+        location: location.trim() || 'Internet Node',
         timeAgo: 'Just now',
         content: newCommentText.trim(),
         upvotes: 1,
@@ -61,55 +61,47 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
       : article.comments;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-md">
-      <div className="bg-white/95 backdrop-blur-2xl w-full max-w-md h-full shadow-2xl flex flex-col font-nyt-sans border-l border-black/10">
-        {/* Apple Style Header */}
-        <div className="p-5 border-b border-black/[0.06] flex items-center justify-between">
-          <div>
-            <h3 className="font-apple-display font-extrabold text-xl text-neutral-900 tracking-tight">
-              Discussion
-            </h3>
-            <p className="text-xs text-neutral-400 truncate max-w-xs">{article.title}</p>
-          </div>
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/50 select-none font-sans">
+      <div className="win95-raised w-full max-w-md h-full shadow-2xl p-1 flex flex-col">
+        {/* Title Bar */}
+        <div className="win95-titlebar mb-1">
+          <span>Usenet Reader - [alt.journalism.nytimes.forum]</span>
           <button
             onClick={onClose}
-            className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-500 hover:text-black transition-colors"
+            className="win95-btn w-4 h-4 flex items-center justify-center font-mono text-[9px] font-bold p-0 leading-none text-black"
           >
-            <X className="w-4 h-4" />
+            ✕
           </button>
         </div>
 
-        {/* Apple Segmented Pills for Tabs */}
-        <div className="p-4 border-b border-black/[0.04] bg-[#f5f5f7]/60">
-          <div className="flex bg-black/[0.05] p-0.5 rounded-full text-xs">
+        {/* Newsgroup Header */}
+        <div className="p-2 bg-[#c0c0c0] border-b border-[#808080] text-xs font-typewriter space-y-1">
+          <div><b>Thread:</b> RE: {article.title}</div>
+          <div className="flex gap-2">
             <button
               onClick={() => setTab('picks')}
-              className={`flex-1 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                tab === 'picks'
-                  ? 'bg-white text-black shadow-xs'
-                  : 'text-neutral-500 hover:text-black'
+              className={`win95-btn px-2 py-0.5 text-[11px] font-bold ${
+                tab === 'picks' ? 'win95-sunken bg-white text-[#000080]' : ''
               }`}
             >
-              Curated Picks ({article.comments.filter((c) => c.isEditorPick).length})
+              [Editor's Selected Postings]
             </button>
             <button
               onClick={() => setTab('all')}
-              className={`flex-1 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                tab === 'all'
-                  ? 'bg-white text-black shadow-xs'
-                  : 'text-neutral-500 hover:text-black'
+              className={`win95-btn px-2 py-0.5 text-[11px] font-bold ${
+                tab === 'all' ? 'win95-sunken bg-white text-[#000080]' : ''
               }`}
             >
-              All Comments ({article.comments.length})
+              [All Postings ({article.comments.length})]
             </button>
           </div>
         </div>
 
-        {/* Comment List */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        {/* Message Thread List */}
+        <div className="flex-1 overflow-y-auto p-3 bg-white space-y-3 font-typewriter text-xs">
           {displayedComments.length === 0 ? (
-            <div className="text-center py-12 text-neutral-400 text-xs">
-              No comments in this section yet. Share your thoughts below.
+            <div className="text-center py-8 text-gray-500">
+              [NO POSTINGS YET IN THIS NEWSGROUP THREAD]
             </div>
           ) : (
             displayedComments.map((comment) => {
@@ -117,38 +109,33 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
               return (
                 <div
                   key={comment.id}
-                  className="p-4 rounded-2xl bg-[#f5f5f7]/80 border border-black/[0.03] space-y-2"
+                  className="p-2.5 bg-gray-50 border border-gray-400 space-y-1.5"
                 >
-                  <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center justify-between border-b border-gray-300 pb-1 text-[11px]">
                     <div>
-                      <span className="font-bold text-neutral-900">{comment.author}</span>
-                      <span className="text-neutral-400 ml-1.5">{comment.location}</span>
+                      <b>From:</b> <span className="text-[#000080]">{comment.author}</span> ({comment.location})
                     </div>
-                    <span className="text-[11px] text-neutral-400">{comment.timeAgo}</span>
+                    <span className="text-gray-500">{comment.timeAgo}</span>
                   </div>
 
                   {comment.isEditorPick && (
-                    <div className="flex items-center gap-1 text-[10px] font-bold text-[#0071e3] uppercase tracking-wider">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#0071e3]" />
-                      <span>Curated by Editors</span>
+                    <div className="text-[10px] text-red-700 font-bold">
+                      *** MODERATOR'S SPECIAL RECOGNITION ***
                     </div>
                   )}
 
-                  <p className="text-xs leading-relaxed text-neutral-800 font-nyt-sans">
+                  <p className="text-black font-serif text-xs leading-relaxed pt-1">
                     {comment.content}
                   </p>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-black/[0.04] text-xs text-neutral-500">
+                  <div className="flex items-center justify-between pt-1 border-t border-dashed border-gray-300 text-[10px]">
                     <button
                       onClick={() => handleRecommend(comment.id)}
-                      className={`flex items-center gap-1 text-[11px] hover:text-black transition-colors ${
-                        isUpvoted ? 'font-bold text-[#0071e3]' : ''
-                      }`}
+                      className={`win95-btn px-1.5 py-0.2 ${isUpvoted ? 'font-bold text-[#000080]' : ''}`}
                     >
-                      <ThumbsUp className={`w-3.5 h-3.5 ${isUpvoted ? 'fill-current text-[#0071e3]' : ''}`} />
-                      <span>Recommend ({comment.upvotes + (isUpvoted ? 1 : 0)})</span>
+                      [+1 Endorse: {comment.upvotes + (isUpvoted ? 1 : 0)}]
                     </button>
-                    <button className="hover:underline text-[11px] text-neutral-400">Reply</button>
+                    <span className="text-gray-400">Message-ID: &lt;{comment.id}@nyt.net&gt;</span>
                   </div>
                 </div>
               );
@@ -156,45 +143,51 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
           )}
         </div>
 
-        {/* Add comment form */}
-        <div className="p-4 border-t border-black/[0.06] bg-[#f5f5f7]">
-          <h4 className="font-bold text-xs uppercase tracking-wider text-neutral-800 mb-2">
-            Add Your Voice
-          </h4>
-          <form onSubmit={handleSubmit} className="space-y-2">
-            <div className="grid grid-cols-2 gap-2">
+        {/* Post Message Box */}
+        <div className="p-3 bg-[#c0c0c0] border-t border-[#808080] font-sans text-xs">
+          <b className="block mb-1.5">Post Reply to Usenet Board:</b>
+          <form onSubmit={handleSubmit} className="space-y-1.5">
+            <div className="grid grid-cols-2 gap-1.5">
               <input
                 type="text"
-                placeholder="Your Name"
+                placeholder="Name / Handle"
                 value={authorName}
                 onChange={(e) => setAuthorName(e.target.value)}
                 required
-                className="text-xs p-2.5 rounded-xl border border-black/10 bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/40"
+                className="win95-sunken p-1 font-typewriter text-xs bg-white text-black"
               />
               <input
                 type="text"
                 placeholder="City, State"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="text-xs p-2.5 rounded-xl border border-black/10 bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/40"
+                className="win95-sunken p-1 font-typewriter text-xs bg-white text-black"
               />
             </div>
             <textarea
               rows={2}
-              placeholder="What are your thoughts on this story?"
+              placeholder="Type your public dispatch..."
               value={newCommentText}
               onChange={(e) => setNewCommentText(e.target.value)}
               required
-              className="w-full text-xs p-2.5 rounded-xl border border-black/10 bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/40 resize-none"
+              className="win95-sunken w-full p-1 font-typewriter text-xs bg-white text-black resize-none"
             />
-            <button
-              type="submit"
-              disabled={isSubmitting || !newCommentText.trim() || !authorName.trim()}
-              className="w-full py-2.5 bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold text-xs rounded-full uppercase tracking-wider transition-all disabled:opacity-40 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
-            >
-              <Send className="w-3.5 h-3.5" />
-              <span>Post Comment</span>
-            </button>
+            <div className="flex justify-end gap-1.5">
+              <button
+                type="button"
+                onClick={onClose}
+                className="win95-btn px-3 py-1 font-bold"
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting || !newCommentText.trim() || !authorName.trim()}
+                className="win95-btn px-3 py-1 font-bold text-[#000080] disabled:opacity-50"
+              >
+                [Post Reply]
+              </button>
+            </div>
           </form>
         </div>
       </div>

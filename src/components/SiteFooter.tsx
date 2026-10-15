@@ -13,207 +13,102 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({
 }) => {
   return (
     <footer
-      className="border-t border-black/[0.08] bg-[#f5f5f7] text-neutral-500 text-xs font-nyt-sans py-12"
-      data-purpose="global-footer"
+      className="max-w-[1360px] mx-auto px-2 sm:px-4 py-6 font-typewriter text-xs text-black select-none"
+      data-purpose="retro-footer"
     >
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6">
-        {/* Brand & Editorial Line */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-8 border-b border-black/[0.06] gap-4">
-          <div className="flex items-center gap-3">
-            <span className="font-masthead text-2xl text-black">The New York Times</span>
-            <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 bg-white px-2 py-0.5 rounded-full border border-black/10">
-              Apple News+ Channel
+      <div className="win95-raised p-3">
+        {/* Top Directory Bar */}
+        <div className="bg-[#000080] text-yellow-300 font-bold px-2 py-1 text-xs flex justify-between items-center mb-3">
+          <span>THE NEW YORK TIMES ON THE WEB · SYSTEM DIRECTORY</span>
+          <span className="font-pixel text-sm">SERVER: SPARC-01.NYT.NET</span>
+        </div>
+
+        {/* 90s HTML Table-style Site Directory */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 p-3 bg-white border border-black text-xs">
+          <div>
+            <b className="border-b border-black pb-0.5 block mb-1">News Desk</b>
+            <ul className="space-y-0.5">
+              <li><button onClick={() => onSelectSection('All')} className="retro-link text-xs">Front Page</button></li>
+              <li><button onClick={() => onSelectSection('U.S.')} className="retro-link text-xs">National</button></li>
+              <li><button onClick={() => onSelectSection('World')} className="retro-link text-xs">World Affairs</button></li>
+              <li><button onClick={() => onSelectSection('Business')} className="retro-link text-xs">Wall Street</button></li>
+            </ul>
+          </div>
+
+          <div>
+            <b className="border-b border-black pb-0.5 block mb-1">Opinion</b>
+            <ul className="space-y-0.5">
+              <li><button onClick={() => onSelectSection('Opinion')} className="retro-link text-xs">Editorials</button></li>
+              <li><button onClick={() => onSelectSection('Opinion')} className="retro-link text-xs">Op-Ed Columns</button></li>
+              <li><button onClick={() => onSelectSection('Opinion')} className="retro-link text-xs">Letters to Editor</button></li>
+            </ul>
+          </div>
+
+          <div>
+            <b className="border-b border-black pb-0.5 block mb-1">CyberTimes</b>
+            <ul className="space-y-0.5">
+              <li><button onClick={() => onSelectSection('Lifestyle')} className="retro-link text-xs">CyberTimes</button></li>
+              <li><button onClick={() => onSelectSection('Lifestyle')} className="retro-link text-xs">Silicon Valley</button></li>
+              <li><button onClick={() => onSelectSection('Lifestyle')} className="retro-link text-xs">Web Culture</button></li>
+            </ul>
+          </div>
+
+          <div>
+            <b className="border-b border-black pb-0.5 block mb-1">Puzzles</b>
+            <ul className="space-y-0.5">
+              <li><button onClick={() => onOpenGames('wordle')} className="retro-link text-xs font-bold text-red-700">WORDLE.EXE</button></li>
+              <li><button onClick={() => onOpenGames('mini')} className="retro-link text-xs">The Mini Crossword</button></li>
+              <li><button onClick={() => onOpenGames('connections')} className="retro-link text-xs">Connections</button></li>
+              <li><button onClick={() => onOpenGames('spelling-bee')} className="retro-link text-xs">Spelling Bee</button></li>
+            </ul>
+          </div>
+
+          <div>
+            <b className="border-b border-black pb-0.5 block mb-1">Services</b>
+            <ul className="space-y-0.5">
+              <li><button onClick={onOpenSubscribe} className="retro-link text-xs">Dial-Up Subscriptions</button></li>
+              <li><button onClick={() => alert('Search Archives: Indexed back to 1851.')} className="retro-link text-xs">Text Archives</button></li>
+              <li><button onClick={() => alert('FTP Download mirror.')} className="retro-link text-xs">FTP Mirrors</button></li>
+            </ul>
+          </div>
+
+          <div>
+            <b className="border-b border-black pb-0.5 block mb-1">Web Info</b>
+            <ul className="space-y-0.5">
+              <li><span className="text-[10px]">HTML 3.2 Strict</span></li>
+              <li><span className="text-[10px]">Netscape 3.0 Gold</span></li>
+              <li><span className="text-[10px]">28.8k Baud Rate</span></li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Vintage 1990s Web Badges & Hit Counter */}
+        <div className="mt-3 p-3 bg-[#e8e8e8] border border-black flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Authentic Hit Counter */}
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-bold">YOU ARE VISITOR:</span>
+            <div className="win95-sunken bg-black text-green-400 font-pixel text-xl tracking-widest px-2 py-0.5 shadow-inner">
+              0 4 8 2 9 1
+            </div>
+          </div>
+
+          {/* 90s Internet Badges */}
+          <div className="flex flex-wrap items-center gap-2 text-[10px]">
+            <span className="win95-raised px-2 py-1 font-bold bg-[#c0c0c0] text-[#000080]">
+              [BEST VIEWED AT 800x600]
+            </span>
+            <span className="win95-raised px-2 py-1 font-bold bg-[#c0c0c0] text-[#008000]">
+              [NETSCAPE NOW! 3.0]
+            </span>
+            <span className="win95-raised px-2 py-1 font-bold bg-[#c0c0c0] text-black">
+              [MADE WITH NOTEPAD]
             </span>
           </div>
-
-          <div className="flex flex-wrap items-center gap-3 text-xs font-medium">
-            {['News', 'Opinion', 'Arts', 'Living', 'Listings & More'].map((item) => (
-              <button
-                key={item}
-                onClick={() =>
-                  onSelectSection(
-                    item === 'News' ? 'U.S.' : item === 'Opinion' ? 'Opinion' : item === 'Arts' ? 'Arts' : 'Lifestyle'
-                  )
-                }
-                className="text-neutral-700 hover:text-black transition-colors cursor-pointer"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
         </div>
 
-        {/* Multi-column Directory */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 py-8 border-b border-black/[0.06]">
-          <div>
-            <h5 className="font-semibold text-neutral-900 mb-2.5">News</h5>
-            <ul className="space-y-1.5 text-neutral-600">
-              {['Home Page', 'U.S.', 'World', 'Politics', 'New York', 'Education', 'Health'].map(
-                (item) => (
-                  <li key={item}>
-                    <button
-                      onClick={() => onSelectSection(item === 'Home Page' ? 'All' : item)}
-                      className="hover:text-black hover:underline transition-colors"
-                    >
-                      {item}
-                    </button>
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
-
-          <div>
-            <h5 className="font-semibold text-neutral-900 mb-2.5">Opinion</h5>
-            <ul className="space-y-1.5 text-neutral-600">
-              {['Today\'s Opinion', 'Columnists', 'Editorials', 'Guest Essays', 'Letters', 'Sunday Opinion'].map(
-                (item) => (
-                  <li key={item}>
-                    <button
-                      onClick={() => onSelectSection('Opinion')}
-                      className="hover:text-black hover:underline transition-colors"
-                    >
-                      {item}
-                    </button>
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
-
-          <div>
-            <h5 className="font-semibold text-neutral-900 mb-2.5">Arts</h5>
-            <ul className="space-y-1.5 text-neutral-600">
-              {['Today\'s Arts', 'Books', 'Best Sellers', 'Dance', 'Movies', 'Music', 'Television'].map(
-                (item) => (
-                  <li key={item}>
-                    <button
-                      onClick={() => onSelectSection('Arts')}
-                      className="hover:text-black hover:underline transition-colors"
-                    >
-                      {item}
-                    </button>
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
-
-          <div>
-            <h5 className="font-semibold text-neutral-900 mb-2.5">Living</h5>
-            <ul className="space-y-1.5 text-neutral-600">
-              {['Style', 'Food', 'Well', 'Travel', 'Love', 'Real Estate', 'T Magazine'].map(
-                (item) => (
-                  <li key={item}>
-                    <button
-                      onClick={() => onSelectSection('Lifestyle')}
-                      className="hover:text-black hover:underline transition-colors"
-                    >
-                      {item}
-                    </button>
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
-
-          <div>
-            <h5 className="font-semibold text-neutral-900 mb-2.5">Puzzles & More</h5>
-            <ul className="space-y-1.5 text-neutral-600">
-              <li>
-                <button
-                  onClick={() => onOpenGames('wordle')}
-                  className="hover:text-black hover:underline font-semibold text-[#0071e3]"
-                >
-                  Apple Puzzles (Wordle)
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectSection('Cooking')}
-                  className="hover:text-black hover:underline"
-                >
-                  Cooking
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectSection('Wirecutter')}
-                  className="hover:text-black hover:underline"
-                >
-                  Wirecutter
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectSection('The Athletic')}
-                  className="hover:text-black hover:underline"
-                >
-                  The Athletic
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectSection('Audio')}
-                  className="hover:text-black hover:underline"
-                >
-                  Podcasts & Audio
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h5 className="font-semibold text-neutral-900 mb-2.5">Subscription</h5>
-            <ul className="space-y-1.5 text-neutral-600">
-              <li>
-                <button
-                  onClick={onOpenSubscribe}
-                  className="hover:text-[#0071e3] font-semibold text-neutral-900"
-                >
-                  Apple News+ Access
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={onOpenSubscribe}
-                  className="hover:text-[#0071e3]"
-                >
-                  Digital Subscriptions
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={onOpenSubscribe}
-                  className="hover:text-[#0071e3]"
-                >
-                  Games Subscription
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={onOpenSubscribe}
-                  className="hover:text-[#0071e3]"
-                >
-                  Corporate Accounts
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Legal & Apple style Copyright Note */}
-        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-neutral-500">
-          <div>
-            Copyright © 2026 The New York Times Company. Reimagined with Apple design language.
-          </div>
-          <div className="flex flex-wrap items-center gap-4">
-            <span className="hover:underline cursor-pointer">Privacy Policy</span>
-            <span className="hover:underline cursor-pointer">Terms of Use</span>
-            <span className="hover:underline cursor-pointer">Sales Policy</span>
-            <span className="hover:underline cursor-pointer">Legal</span>
-            <span className="hover:underline cursor-pointer">Site Map</span>
-          </div>
+        {/* Copyright notice */}
+        <div className="mt-2 text-center text-[10px] text-gray-700 font-typewriter">
+          Copyright © 1996–2026 The New York Times Company · All rights reserved · Reproduction in whole or in part without permission is prohibited.
         </div>
       </div>
     </footer>

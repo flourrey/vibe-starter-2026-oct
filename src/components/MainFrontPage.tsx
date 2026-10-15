@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquare, Bookmark, ArrowUpRight, TrendingUp, Cpu, Activity } from 'lucide-react';
+import { MessageSquare, Bookmark, Volume2, ExternalLink } from 'lucide-react';
 import { Article } from '../types/news';
 
 interface MainFrontPageProps {
@@ -34,502 +34,431 @@ export const MainFrontPage: React.FC<MainFrontPageProps> = ({
   const popeLeoArticle = articles.find((a) => a.id === 'health-science-lung-cancer-therapy-pope-leo') || articles[14];
 
   return (
-    <main className="max-w-[1360px] mx-auto px-4 sm:px-6 py-6" data-purpose="primary-news-grid">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <main className="max-w-[1360px] mx-auto px-2 sm:px-4 py-3 font-serif" data-purpose="primary-retro-grid">
+      {/* 90s Web 1.0 Three-Column Table Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
         {/* ======================================================== */}
-        {/* LEFT COLUMN: Apple News Editorial Cards (3 cols)         */}
+        {/* LEFT COLUMN: 1990s News Desk (3 cols)                    */}
         {/* ======================================================== */}
-        <section aria-label="Lead Side Stories" className="lg:col-span-3 space-y-4">
-          {/* Story 1: High Ranking Women */}
-          {trumpWomenArticle && (
-            <article className="apple-card p-5 group relative">
-              <div className="flex items-center justify-between gap-2 mb-2.5">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#ff3b30] bg-red-50 px-2 py-0.5 rounded-full">
-                  Politics
-                </span>
-                <button
-                  onClick={(e) => onToggleSave(trumpWomenArticle.id, e)}
-                  title={savedArticleIds.includes(trumpWomenArticle.id) ? 'Saved' : 'Save story'}
-                  className="p-1 rounded-full text-neutral-400 hover:text-black hover:bg-black/[0.05] transition-colors"
-                >
-                  <Bookmark
-                    className={`w-3.5 h-3.5 ${
-                      savedArticleIds.includes(trumpWomenArticle.id)
-                        ? 'fill-current text-[#0071e3]'
-                        : ''
-                    }`}
-                  />
-                </button>
-              </div>
+        <section aria-label="National Dispatches" className="lg:col-span-3 space-y-3">
+          {/* Section Box Frame */}
+          <div className="win95-raised p-1">
+            <div className="win95-titlebar mb-2">
+              <span>National & Politics Desk</span>
+              <span className="text-[10px] font-mono">[SECTION A]</span>
+            </div>
 
-              <h2
-                onClick={() => onSelectArticle(trumpWomenArticle)}
-                className="font-apple-display text-xl font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
-              >
-                {trumpWomenArticle.title}
-              </h2>
-              <p
-                onClick={() => onSelectArticle(trumpWomenArticle)}
-                className="text-[13px] leading-relaxed text-neutral-600 mt-2 cursor-pointer font-nyt-sans line-clamp-3"
-              >
-                {trumpWomenArticle.summary}
-              </p>
-              <div className="text-[11px] text-neutral-400 mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between font-nyt-sans">
-                <span>{trumpWomenArticle.readTime}</span>
-                <span className="flex items-center gap-0.5 text-[#0071e3] font-medium group-hover:translate-x-0.5 transition-transform">
-                  Read <ArrowUpRight className="w-3 h-3" />
-                </span>
-              </div>
-            </article>
-          )}
-
-          {/* Story 2: Kimberly Guilfoyle Fall */}
-          {guilfoyleArticle && (
-            <article className="apple-card p-5 group">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 block mb-2">
-                Diplomatic Desk
-              </span>
-              <h3
-                onClick={() => onSelectArticle(guilfoyleArticle)}
-                className="font-apple-display text-lg font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
-              >
-                {guilfoyleArticle.title}
-              </h3>
-              <p
-                onClick={() => onSelectArticle(guilfoyleArticle)}
-                className="text-[13px] leading-relaxed text-neutral-600 mt-1.5 cursor-pointer font-nyt-sans line-clamp-2"
-              >
-                {guilfoyleArticle.summary}
-              </p>
-              <div className="text-[11px] text-neutral-400 mt-3 flex items-center gap-1 font-medium font-nyt-sans">
-                <MessageSquare className="w-3 h-3 text-neutral-400" />
-                <span>{guilfoyleArticle.commentsCount} comments</span>
-              </div>
-            </article>
-          )}
-
-          {/* Story 3: Katie Zacharia / Press Secretary */}
-          {zachariaArticle && (
-            <article className="apple-card p-5 group">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 block mb-2">
-                White House
-              </span>
-              <h3
-                onClick={() => onSelectArticle(zachariaArticle)}
-                className="font-apple-display text-lg font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
-              >
-                {zachariaArticle.title}
-              </h3>
-              <p
-                onClick={() => onSelectArticle(zachariaArticle)}
-                className="text-[13px] leading-relaxed text-neutral-600 mt-1.5 cursor-pointer font-nyt-sans line-clamp-2"
-              >
-                {zachariaArticle.summary}
-              </p>
-              <div className="text-[11px] text-neutral-400 mt-3 font-nyt-sans">
-                <span>{zachariaArticle.readTime}</span>
-              </div>
-            </article>
-          )}
-
-          {/* Section: Cornell Campus Inquiry */}
-          {cornellArticle && (
-            <article className="apple-card p-5 bg-gradient-to-br from-white to-[#fafafa] border border-black/[0.06]">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#b3261e] bg-red-50 px-2 py-0.5 rounded-full inline-block mb-2">
-                Campus Inquiry
-              </span>
-              <h3
-                onClick={() => onSelectArticle(cornellArticle)}
-                className="font-apple-display text-lg font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
-              >
-                {cornellArticle.title}
-              </h3>
-              <p
-                onClick={() => onSelectArticle(cornellArticle)}
-                className="text-[13px] leading-relaxed text-neutral-600 mt-1.5 cursor-pointer font-nyt-sans"
-              >
-                {cornellArticle.summary}
-              </p>
-              {cornellArticle.subLinks && (
-                <div className="mt-3 pt-3 border-t border-black/[0.04] space-y-1.5 text-xs font-nyt-sans text-neutral-700">
-                  {cornellArticle.subLinks.map((link, idx) => (
-                    <div
-                      key={idx}
-                      onClick={() => onSelectArticle(cornellArticle)}
-                      className="hover:text-[#0071e3] cursor-pointer flex items-center gap-1.5 transition-colors font-medium"
+            <div className="bg-white p-3 border border-black space-y-4">
+              {/* Story 1 */}
+              {trumpWomenArticle && (
+                <article className="border-b border-gray-300 pb-3">
+                  <span className="font-pixel text-sm text-red-700 font-bold block leading-none mb-1">
+                    [SPECIAL DISPATCH]
+                  </span>
+                  <h2
+                    onClick={() => onSelectArticle(trumpWomenArticle)}
+                    className="retro-link text-base font-bold font-headline leading-tight block mb-1"
+                  >
+                    {trumpWomenArticle.title}
+                  </h2>
+                  <p className="text-xs text-black leading-snug">
+                    {trumpWomenArticle.summary}
+                  </p>
+                  <div className="mt-2 text-[10px] font-typewriter text-gray-600 flex items-center justify-between">
+                    <span>5 MIN READ · TIERNEY L. CROSS</span>
+                    <button
+                      onClick={(e) => onToggleSave(trumpWomenArticle.id, e)}
+                      className="win95-btn px-1 py-0.2 text-[9px]"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-neutral-300" />
-                      <span>{link}</span>
-                    </div>
-                  ))}
-                </div>
+                      {savedArticleIds.includes(trumpWomenArticle.id) ? '★ Hotlisted' : '+ Hotlist'}
+                    </button>
+                  </div>
+                </article>
               )}
-            </article>
+
+              {/* Story 2 */}
+              {guilfoyleArticle && (
+                <article className="border-b border-gray-300 pb-3">
+                  <h3
+                    onClick={() => onSelectArticle(guilfoyleArticle)}
+                    className="retro-link text-sm font-bold font-headline leading-tight block mb-1"
+                  >
+                    {guilfoyleArticle.title}
+                  </h3>
+                  <p className="text-xs text-black leading-snug">
+                    {guilfoyleArticle.summary}
+                  </p>
+                  <div className="text-[10px] font-typewriter text-gray-500 mt-1">
+                    Forum: 519 responses logged
+                  </div>
+                </article>
+              )}
+
+              {/* Story 3 */}
+              {zachariaArticle && (
+                <article className="border-b border-gray-300 pb-3">
+                  <h3
+                    onClick={() => onSelectArticle(zachariaArticle)}
+                    className="retro-link text-sm font-bold font-headline leading-tight block mb-1"
+                  >
+                    {zachariaArticle.title}
+                  </h3>
+                  <p className="text-xs text-black leading-snug">
+                    {zachariaArticle.summary}
+                  </p>
+                  <span className="text-[10px] font-typewriter text-gray-500 block mt-1">
+                    4 min text stream
+                  </span>
+                </article>
+              )}
+
+              {/* Story 4: Cornell Campus Inquiry */}
+              {cornellArticle && (
+                <article className="bg-yellow-50 p-2 border border-black">
+                  <div className="bg-red-800 text-white font-pixel px-1 text-xs font-bold inline-block mb-1">
+                    CAMPUS INQUIRY · ACADEMIC DISPATCH
+                  </div>
+                  <h3
+                    onClick={() => onSelectArticle(cornellArticle)}
+                    className="retro-link text-sm font-bold font-headline leading-tight block mb-1"
+                  >
+                    {cornellArticle.title}
+                  </h3>
+                  <p className="text-xs text-black leading-snug">
+                    {cornellArticle.summary}
+                  </p>
+                  {cornellArticle.subLinks && (
+                    <ul className="mt-2 text-xs text-black space-y-1 list-disc list-inside">
+                      {cornellArticle.subLinks.map((link, idx) => (
+                        <li
+                          key={idx}
+                          onClick={() => onSelectArticle(cornellArticle)}
+                          className="retro-link text-[11px]"
+                        >
+                          {link}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </article>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* ======================================================== */}
+        {/* CENTER COLUMN: Lead Headline & Retro Media (6 cols)      */}
+        {/* ======================================================== */}
+        <section aria-label="Hero Story and Deep Dives" className="lg:col-span-6 space-y-3">
+          {heroArticle && (
+            <div className="win95-raised p-1">
+              <div className="win95-titlebar mb-1">
+                <span>International Lead Bulletin</span>
+                <span className="text-[10px] font-mono">[WAR & CRISIS]</span>
+              </div>
+
+              <div className="bg-white p-4 border border-black">
+                {/* Vintage Top Category */}
+                <div className="flex items-center justify-between text-xs font-typewriter text-red-800 font-bold border-b-2 border-black pb-1 mb-2">
+                  <span>WORLD REPORT: KYIV FRONT LINE</span>
+                  <span className="bg-black text-white px-1 text-[10px]">TRANSMISSION VERIFIED</span>
+                </div>
+
+                {/* Main Headline */}
+                <h2
+                  onClick={() => onSelectArticle(heroArticle)}
+                  className="retro-link text-2xl sm:text-3xl font-black font-headline leading-[1.12] mb-2 block"
+                >
+                  {heroArticle.title}
+                </h2>
+
+                <p className="text-sm font-serif leading-relaxed text-black mb-3">
+                  {heroArticle.summary}
+                </p>
+
+                <div className="text-xs font-typewriter text-gray-700 flex items-center justify-between border-t border-b border-gray-300 py-1 mb-3">
+                  <span>By {heroArticle.byline}</span>
+                  <span className="font-bold">Discussion: 1.1k Postings</span>
+                </div>
+
+                {/* 1990s Image Box with Inset Border */}
+                <figure className="mb-3">
+                  <div className="win95-sunken p-1 bg-black">
+                    <img
+                      alt={heroArticle.title}
+                      className="w-full object-cover max-h-[340px]"
+                      src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src =
+                          'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80';
+                      }}
+                    />
+                  </div>
+                  <figcaption className="text-[11px] font-typewriter text-gray-700 pt-1 flex justify-between bg-gray-100 p-1 border border-t-0 border-black">
+                    <span>Photo: {heroArticle.imageCredit}</span>
+                    <span>{heroArticle.imageCaption}</span>
+                  </figcaption>
+                </figure>
+
+                {/* 90s War Analysis Table */}
+                {heroArticle.highlightBullets && (
+                  <div className="win95-raised p-2 my-3 text-xs">
+                    <div className="bg-[#000080] text-white font-bold px-2 py-0.5 text-xs mb-1.5 flex justify-between">
+                      <span>RUSSIA-UKRAINE WAR ANALYSIS</span>
+                      <span className="font-mono text-[10px]">MEMORANDUM</span>
+                    </div>
+                    <ul className="space-y-1.5 text-black">
+                      {heroArticle.highlightBullets.map((bullet, idx) => (
+                        <li key={idx} className="flex items-start gap-1">
+                          <span className="text-[#000080] font-bold">»</span>
+                          <span>
+                            <b>{bullet.boldPrefix}</b> {bullet.text}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Two Sub-leads in 90s Table Cells */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 border-t-2 border-black">
+                  {dieselArticle && (
+                    <article className="border border-gray-400 p-2 bg-gray-50">
+                      <span className="font-typewriter text-[10px] text-gray-600 block mb-0.5">
+                        COMMODITY EXCHANGE
+                      </span>
+                      <h4
+                        onClick={() => onSelectArticle(dieselArticle)}
+                        className="retro-link text-sm font-bold font-headline leading-tight block mb-1"
+                      >
+                        {dieselArticle.title}
+                      </h4>
+                      <p className="text-xs text-black">
+                        {dieselArticle.summary}
+                      </p>
+                    </article>
+                  )}
+
+                  {usIntelArticle && (
+                    <article className="border border-gray-400 p-2 bg-gray-50">
+                      <span className="font-typewriter text-[10px] text-gray-600 block mb-0.5">
+                        INTELLIGENCE APPARATUS
+                      </span>
+                      <h4
+                        onClick={() => onSelectArticle(usIntelArticle)}
+                        className="retro-link text-sm font-bold font-headline leading-tight block mb-1"
+                      >
+                        {usIntelArticle.title}
+                      </h4>
+                      <p className="text-xs text-black">
+                        {usIntelArticle.summary}
+                      </p>
+                    </article>
+                  )}
+                </div>
+
+                {/* The Evening Briefing 90s RealAudio Banner */}
+                {eveningBriefingArticle && (
+                  <article
+                    onClick={() => onSelectArticle(eveningBriefingArticle)}
+                    className="win95-raised p-2.5 mt-3 cursor-pointer bg-[#e0e0e0] border border-black flex items-center justify-between gap-3"
+                  >
+                    <div>
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <span className="bg-[#ff0000] text-white font-pixel text-xs px-1 font-bold">
+                          REALAUDIO 3.0
+                        </span>
+                        <span className="font-bold text-xs">The Evening Briefing</span>
+                      </div>
+                      <h4 className="retro-link font-bold text-sm">
+                        {eveningBriefingArticle.title}
+                      </h4>
+                      <p className="text-xs text-gray-700 line-clamp-1">
+                        {eveningBriefingArticle.summary}
+                      </p>
+                    </div>
+                    <button className="win95-btn px-2 py-1 shrink-0 flex items-center gap-1 text-xs font-bold text-[#000080]">
+                      <Volume2 className="w-3.5 h-3.5" />
+                      <span>Play (14.4k)</span>
+                    </button>
+                  </article>
+                )}
+              </div>
+            </div>
           )}
         </section>
 
         {/* ======================================================== */}
-        {/* CENTER COLUMN: Apple Spotlight Bento Hero (6 cols)        */}
+        {/* RIGHT COLUMN: CyberTimes, Opinion & Elections (3 cols)   */}
         {/* ======================================================== */}
-        <section aria-label="Hero Story and Deep Dives" className="lg:col-span-6 space-y-6">
-          {heroArticle && (
-            <article className="apple-card p-6 sm:p-7 bg-white relative overflow-hidden">
-              {/* Apple News Category & Read Time Capsule */}
-              <div className="flex items-center justify-between mb-3 text-xs font-nyt-sans">
-                <span className="bg-neutral-900 text-white font-bold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full">
-                  Spotlight Story
-                </span>
-                <span className="text-neutral-500 font-medium">{heroArticle.readTime}</span>
+        <section aria-label="CyberTimes and Opinions" className="lg:col-span-3 space-y-3">
+          {/* Election '96 / 2026 Box */}
+          {texasSenateArticle && (
+            <div className="win95-raised p-1">
+              <div className="win95-titlebar mb-1">
+                <span>Elections '96/2026 Polls</span>
+                <span className="text-[10px] font-mono">[CAMPAIGN]</span>
               </div>
-
-              {/* Dominant Apple Display Headline */}
-              <h2
-                onClick={() => onSelectArticle(heroArticle)}
-                className="font-apple-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors leading-[1.14]"
-              >
-                {heroArticle.title}
-              </h2>
-
-              {/* Deck */}
-              <p
-                onClick={() => onSelectArticle(heroArticle)}
-                className="text-[15px] leading-relaxed text-neutral-600 mt-3 font-nyt-sans cursor-pointer"
-              >
-                {heroArticle.summary}
-              </p>
-
-              {/* Byline & Discussion */}
-              <div className="flex items-center justify-between mt-3 text-xs text-neutral-500 font-nyt-sans pb-4 border-b border-black/[0.04]">
-                <span className="font-semibold text-neutral-800">By {heroArticle.byline}</span>
-                <span
-                  onClick={() => onSelectArticle(heroArticle)}
-                  className="flex items-center gap-1 text-neutral-600 hover:text-black cursor-pointer font-medium"
+              <div className="bg-white p-3 border border-black">
+                <span className="bg-[#000080] text-white font-pixel text-xs px-1 font-bold inline-block mb-1">
+                  BATTLEGROUND POLLING
+                </span>
+                <h3
+                  onClick={() => onSelectArticle(texasSenateArticle)}
+                  className="retro-link text-base font-bold font-headline leading-tight block mb-1"
                 >
-                  <MessageSquare className="w-3.5 h-3.5" />
-                  1.1k comments
-                </span>
-              </div>
-
-              {/* Lead Editorial Image with Apple continuous rounded corners */}
-              <figure
-                onClick={() => onSelectArticle(heroArticle)}
-                className="mt-4 cursor-pointer group"
-              >
-                <div className="w-full overflow-hidden rounded-2xl bg-neutral-100 border border-black/[0.06] shadow-xs">
-                  <img
-                    alt={heroArticle.title}
-                    className="w-full object-cover max-h-[380px] group-hover:scale-[1.015] transition-transform duration-500 ease-out"
-                    src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src =
-                        'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80';
-                    }}
-                  />
-                </div>
-                <figcaption className="text-[11px] font-nyt-sans text-neutral-500 pt-2 flex justify-between px-1">
-                  <span>{heroArticle.imageCredit}</span>
-                  <span>{heroArticle.imageCaption}</span>
-                </figcaption>
-              </figure>
-
-              {/* Russia-Ukraine War Analysis in Apple Inset Card */}
-              {heroArticle.highlightBullets && (
-                <div className="mt-5 p-4 rounded-2xl bg-[#f5f5f7] border border-black/[0.03]">
-                  <span className="text-[11px] uppercase tracking-wider font-extrabold text-neutral-900 block mb-2 font-nyt-sans">
-                    War Analysis & Key Takeaways
-                  </span>
-                  <div className="space-y-2 text-xs font-nyt-sans text-neutral-800">
-                    {heroArticle.highlightBullets.map((bullet, idx) => (
-                      <div
-                        key={idx}
-                        onClick={() => onSelectArticle(heroArticle)}
-                        className="hover:text-[#0071e3] cursor-pointer flex items-start gap-2 transition-colors"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-1.5 shrink-0" />
-                        <p className="leading-snug">
-                          <strong className="text-black font-semibold">{bullet.boldPrefix}</strong>{' '}
-                          {bullet.text}
-                        </p>
+                  {texasSenateArticle.title}
+                </h3>
+                <p className="text-xs text-black mb-2">
+                  {texasSenateArticle.summary}
+                </p>
+                {texasSenateArticle.highlightBullets && (
+                  <div className="border-t border-gray-300 pt-1 text-xs space-y-1">
+                    {texasSenateArticle.highlightBullets.map((item, idx) => (
+                      <div key={idx} className="leading-snug">
+                        • <b>{item.boldPrefix}</b> {item.text}
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
-            </article>
+                )}
+              </div>
+            </div>
           )}
 
-          {/* Sub-leads Split in Two Apple Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {dieselArticle && (
-              <article className="apple-card p-5 group flex flex-col justify-between">
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block mb-1.5">
-                    Energy Analysis
-                  </span>
-                  <h3
-                    onClick={() => onSelectArticle(dieselArticle)}
-                    className="font-apple-display text-base font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
-                  >
-                    {dieselArticle.title}
-                  </h3>
-                  <p
-                    onClick={() => onSelectArticle(dieselArticle)}
-                    className="text-xs text-neutral-600 mt-2 font-nyt-sans line-clamp-3 leading-relaxed"
-                  >
-                    {dieselArticle.summary}
-                  </p>
-                </div>
-                <span className="text-[11px] text-neutral-400 mt-3 block font-nyt-sans">
-                  {dieselArticle.readTime}
-                </span>
-              </article>
-            )}
-
-            {usIntelArticle && (
-              <article className="apple-card p-5 group flex flex-col justify-between">
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block mb-1.5">
-                    Intelligence Desk
-                  </span>
-                  <h3
-                    onClick={() => onSelectArticle(usIntelArticle)}
-                    className="font-apple-display text-base font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
-                  >
-                    {usIntelArticle.title}
-                  </h3>
-                  <p
-                    onClick={() => onSelectArticle(usIntelArticle)}
-                    className="text-xs text-neutral-600 mt-2 font-nyt-sans line-clamp-3 leading-relaxed"
-                  >
-                    {usIntelArticle.summary}
-                  </p>
-                </div>
-                <span className="text-[11px] text-neutral-400 mt-3 block font-nyt-sans">
-                  {usIntelArticle.readTime}
-                </span>
-              </article>
-            )}
-          </div>
-
-          {/* The Evening Briefing Apple Card */}
-          {eveningBriefingArticle && (
-            <article
-              onClick={() => onSelectArticle(eveningBriefingArticle)}
-              className="apple-card p-6 bg-gradient-to-r from-neutral-900 to-[#1d1d1f] text-white cursor-pointer group"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <span className="bg-white/20 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
-                  The Evening Briefing
-                </span>
-                <span className="text-neutral-400 text-xs">5 min read</span>
-              </div>
-              <h3 className="font-apple-display text-2xl font-bold tracking-tight text-white group-hover:text-amber-300 transition-colors">
-                {eveningBriefingArticle.title}
-              </h3>
-              <p className="text-xs text-neutral-300 mt-2 font-nyt-sans leading-relaxed">
-                {eveningBriefingArticle.summary}
-              </p>
-              <div className="mt-4 flex items-center justify-between text-xs text-neutral-400 font-nyt-sans">
-                <span>By {eveningBriefingArticle.byline}</span>
-                <span className="text-white font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                  Listen & Read <ArrowUpRight className="w-3.5 h-3.5" />
-                </span>
-              </div>
-            </article>
-          )}
-        </section>
-
-        {/* ======================================================== */}
-        {/* RIGHT COLUMN: Opinion & Cupertino Deep Dives (3 cols)    */}
-        {/* ======================================================== */}
-        <section aria-label="Opinion and Politics Column" className="lg:col-span-3 space-y-4">
-          {/* Election Dispatches Apple Polling Card */}
-          {texasSenateArticle && (
-            <article className="apple-card p-5 group">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-nyt-sans">
-                  Election Dispatches
-                </span>
-                <span className="bg-red-50 text-red-700 font-bold text-[10px] px-2 py-0.5 rounded-full border border-red-100 font-nyt-sans">
-                  2026 Polls
-                </span>
-              </div>
-              <h3
-                onClick={() => onSelectArticle(texasSenateArticle)}
-                className="font-apple-display text-lg font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
-              >
-                {texasSenateArticle.title}
-              </h3>
-              <p
-                onClick={() => onSelectArticle(texasSenateArticle)}
-                className="text-[13px] leading-relaxed text-neutral-600 mt-1.5 cursor-pointer font-nyt-sans line-clamp-2"
-              >
-                {texasSenateArticle.summary}
-              </p>
-              {texasSenateArticle.highlightBullets && (
-                <div className="mt-3 pt-3 border-t border-black/[0.04] space-y-1.5 text-xs font-nyt-sans">
-                  {texasSenateArticle.highlightBullets.map((item, idx) => (
-                    <div
-                      key={idx}
-                      onClick={() => onSelectArticle(texasSenateArticle)}
-                      className="text-neutral-700 hover:text-black cursor-pointer leading-snug flex items-start gap-1.5"
-                    >
-                      <span className="text-[#0071e3] font-bold">›</span>
-                      <span>
-                        <strong className="text-black">{item.boldPrefix}</strong> {item.text}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </article>
-          )}
-
-          {/* Tech & Artificial Intelligence */}
+          {/* CyberTimes Tech Section (Authentic NYT 1996 title!) */}
           {aiDinnerArticle && (
-            <article className="apple-card p-5 group">
-              <div className="flex items-center justify-between mb-2">
-                <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#0071e3] font-nyt-sans">
-                  <Cpu className="w-3.5 h-3.5" />
-                  Artificial Intelligence
-                </span>
-                <span className="text-[10px] text-neutral-400 font-medium">Tech Focus</span>
+            <div className="win95-raised p-1">
+              <div className="win95-titlebar mb-1 bg-gradient-to-r from-[#008080] to-[#000080]">
+                <span>CyberTimes · Digital Culture</span>
+                <span className="text-[10px] font-mono">[TECH]</span>
               </div>
-              <h3
-                onClick={() => onSelectArticle(aiDinnerArticle)}
-                className="font-apple-display text-lg font-bold leading-snug tracking-tight text-[#1d1d1f] hover:text-[#0071e3] cursor-pointer transition-colors"
-              >
-                {aiDinnerArticle.title}
-              </h3>
-              <p
-                onClick={() => onSelectArticle(aiDinnerArticle)}
-                className="text-[13px] leading-relaxed text-neutral-600 mt-1.5 cursor-pointer font-nyt-sans line-clamp-3"
-              >
-                {aiDinnerArticle.summary}
-              </p>
-              <div className="text-[11px] text-neutral-400 mt-3 pt-2.5 border-t border-black/[0.04] flex items-center justify-between font-nyt-sans">
-                <span>By {aiDinnerArticle.byline}</span>
-                <span>{aiDinnerArticle.commentsCount} comments</span>
-              </div>
-
-              {anthropicArticle && (
-                <div
-                  onClick={() => onSelectArticle(anthropicArticle)}
-                  className="mt-3 pt-3 border-t border-black/[0.06] cursor-pointer group/item"
-                >
-                  <span className="font-bold text-xs group-hover/item:text-[#0071e3] transition-colors block leading-snug">
-                    {anthropicArticle.title}
-                  </span>
-                  <span className="text-[11px] text-neutral-400 mt-0.5 block">
-                    {anthropicArticle.readTime}
-                  </span>
+              <div className="bg-white p-3 border border-black space-y-2">
+                <div className="font-pixel text-xs text-green-800 font-bold">
+                  INTERNET & ARTIFICIAL REASONING
                 </div>
-              )}
-            </article>
+                <h3
+                  onClick={() => onSelectArticle(aiDinnerArticle)}
+                  className="retro-link text-sm font-bold font-headline leading-tight block"
+                >
+                  {aiDinnerArticle.title}
+                </h3>
+                <p className="text-xs text-black">
+                  {aiDinnerArticle.summary}
+                </p>
+                <div className="text-[10px] font-typewriter text-gray-500 flex justify-between pt-1 border-t border-gray-200">
+                  <span>By {aiDinnerArticle.byline}</span>
+                  <span>210 comments</span>
+                </div>
+                {anthropicArticle && (
+                  <div
+                    onClick={() => onSelectArticle(anthropicArticle)}
+                    className="p-1.5 bg-gray-100 border border-gray-300 cursor-pointer"
+                  >
+                    <span className="retro-link text-xs font-bold block">
+                      {anthropicArticle.title}
+                    </span>
+                    <span className="text-[10px] text-gray-500 font-typewriter">
+                      Financials · 3 min read
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
           )}
 
-          {/* Opinion Column with Apple Squircle Columnist Avatars */}
-          <aside className="apple-card p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-black/[0.06] pb-2">
-              <h3 className="font-apple-display font-bold text-sm tracking-tight text-neutral-900">
-                Editorial & Opinion
-              </h3>
+          {/* Editorial & Forum Column */}
+          <div className="win95-raised p-1">
+            <div className="win95-titlebar mb-1">
+              <span>Forum & Opinion Columnists</span>
               <button
                 onClick={() => onOpenSection('Opinion')}
-                className="text-xs text-[#0071e3] hover:underline cursor-pointer font-medium"
+                className="text-[10px] text-yellow-300 hover:underline"
               >
-                See All ›
+                Index ›
               </button>
             </div>
+            <div className="bg-white p-2.5 border border-black space-y-3">
+              {/* Columnist 1 */}
+              {opinion1 && (
+                <div
+                  onClick={() => onSelectArticle(opinion1)}
+                  className="flex gap-2 border-b border-gray-300 pb-2 cursor-pointer"
+                >
+                  <div className="win95-sunken w-8 h-8 bg-black text-green-400 font-pixel text-sm flex items-center justify-center shrink-0">
+                    DW
+                  </div>
+                  <div>
+                    <span className="font-bold text-xs text-black block">
+                      {opinion1.byline}
+                    </span>
+                    <h4 className="retro-link text-xs font-bold leading-tight">
+                      {opinion1.title}
+                    </h4>
+                  </div>
+                </div>
+              )}
 
-            {/* Columnist 1 */}
-            {opinion1 && (
-              <div
-                onClick={() => onSelectArticle(opinion1)}
-                className="flex gap-3 cursor-pointer group pb-3 border-b border-black/[0.04]"
-              >
-                <div className="flex-1 space-y-1 font-nyt-sans">
-                  <span className="text-xs font-bold text-neutral-900 block">
-                    {opinion1.byline}
-                  </span>
-                  <h4 className="font-apple-display text-[14px] font-bold leading-snug group-hover:text-[#0071e3] transition-colors">
-                    {opinion1.title}
-                  </h4>
-                  <span className="text-[11px] text-neutral-400 block">
-                    {opinion1.commentsCount} comments
-                  </span>
+              {/* Columnist 2 */}
+              {opinion2 && (
+                <div
+                  onClick={() => onSelectArticle(opinion2)}
+                  className="flex gap-2 border-b border-gray-300 pb-2 cursor-pointer"
+                >
+                  <div className="win95-sunken w-8 h-8 bg-black text-cyan-400 font-pixel text-sm flex items-center justify-center shrink-0">
+                    CL
+                  </div>
+                  <div>
+                    <span className="font-bold text-xs text-black block">
+                      {opinion2.byline}
+                    </span>
+                    <h4 className="retro-link text-xs font-bold leading-tight">
+                      {opinion2.title}
+                    </h4>
+                  </div>
                 </div>
-                <div className="w-10 h-10 rounded-2xl bg-[#0071e3]/10 text-[#0071e3] flex items-center justify-center font-bold font-apple-display text-xs shrink-0 ring-1 ring-black/[0.05]">
-                  DW
-                </div>
-              </div>
-            )}
+              )}
 
-            {/* Columnist 2 */}
-            {opinion2 && (
-              <div
-                onClick={() => onSelectArticle(opinion2)}
-                className="flex gap-3 cursor-pointer group pb-3 border-b border-black/[0.04]"
-              >
-                <div className="flex-1 space-y-1 font-nyt-sans">
-                  <span className="text-xs font-bold text-neutral-900 block">
-                    {opinion2.byline}
-                  </span>
-                  <h4 className="font-apple-display text-[14px] font-bold leading-snug group-hover:text-[#0071e3] transition-colors">
-                    {opinion2.title}
-                  </h4>
-                  <span className="text-[11px] text-neutral-400 block">
-                    {opinion2.commentsCount} comments
-                  </span>
+              {/* Columnist 3 */}
+              {opinion3 && (
+                <div
+                  onClick={() => onSelectArticle(opinion3)}
+                  className="flex gap-2 cursor-pointer"
+                >
+                  <div className="win95-sunken w-8 h-8 bg-black text-yellow-400 font-pixel text-sm flex items-center justify-center shrink-0">
+                    HK
+                  </div>
+                  <div>
+                    <span className="font-bold text-xs text-black block">
+                      {opinion3.byline} (Guest)
+                    </span>
+                    <h4 className="retro-link text-xs font-bold leading-tight">
+                      {opinion3.title}
+                    </h4>
+                  </div>
                 </div>
-                <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-700 flex items-center justify-center font-bold font-apple-display text-xs shrink-0 ring-1 ring-black/[0.05]">
-                  CL
-                </div>
-              </div>
-            )}
+              )}
+            </div>
+          </div>
 
-            {/* Columnist 3 */}
-            {opinion3 && (
-              <div
-                onClick={() => onSelectArticle(opinion3)}
-                className="flex gap-3 cursor-pointer group"
-              >
-                <div className="flex-1 space-y-1 font-nyt-sans">
-                  <span className="text-xs font-bold text-neutral-900 block">
-                    {opinion3.byline}
-                  </span>
-                  <h4 className="font-apple-display text-[14px] font-bold leading-snug group-hover:text-[#0071e3] transition-colors">
-                    {opinion3.title}
-                  </h4>
-                  <span className="text-[10px] text-neutral-400 font-medium">Guest Essay</span>
-                </div>
-                <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center font-bold font-apple-display text-xs shrink-0 ring-1 ring-black/[0.05]">
-                  HK
-                </div>
-              </div>
-            )}
-          </aside>
-
-          {/* Health & Science Apple Inset Card */}
+          {/* Health & Science */}
           {popeLeoArticle && (
-            <article
-              onClick={() => onSelectArticle(popeLeoArticle)}
-              className="apple-card p-5 bg-[#fafafa] border border-black/[0.05] cursor-pointer group"
-            >
-              <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-600 mb-1.5 font-nyt-sans">
-                <Activity className="w-3.5 h-3.5 text-rose-500" />
-                <span>Health & Science</span>
+            <div className="win95-raised p-1">
+              <div className="win95-titlebar mb-1">
+                <span>Science Times</span>
+                <span className="text-[10px] font-mono">[MEDICINE]</span>
               </div>
-              <h4 className="font-apple-display text-[15px] font-bold leading-snug group-hover:text-[#0071e3] transition-colors">
-                {popeLeoArticle.title}
-              </h4>
-              <p className="text-xs text-neutral-600 mt-1.5 font-nyt-sans line-clamp-2">
-                {popeLeoArticle.summary}
-              </p>
-              <span className="text-[11px] text-neutral-400 mt-2 block font-nyt-sans">
-                {popeLeoArticle.commentsCount} comments
-              </span>
-            </article>
+              <div className="bg-white p-2.5 border border-black">
+                <h4
+                  onClick={() => onSelectArticle(popeLeoArticle)}
+                  className="retro-link text-xs font-bold block mb-1"
+                >
+                  {popeLeoArticle.title}
+                </h4>
+                <p className="text-[11px] text-black">
+                  {popeLeoArticle.summary}
+                </p>
+              </div>
+            </div>
           )}
         </section>
       </div>

@@ -102,7 +102,7 @@ export default function App() {
     : articles.filter((a) => a.section.toLowerCase() === activeSection.toLowerCase());
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-nyt-sans selection:bg-[#0071e3]/20 selection:text-[#0071e3] flex flex-col">
+    <div className="min-h-screen bg-[#c0c0c0] text-black font-serif selection:bg-[#000080] selection:text-white flex flex-col p-1 sm:p-2">
       {/* Site Header */}
       <SiteHeader
         currentEdition={currentEdition}
@@ -142,20 +142,17 @@ export default function App() {
         <div className="flex-1">
           {/* Section Filter Banner if active */}
           {activeSection !== 'All' && (
-            <div className="max-w-[1360px] mx-auto px-4 sm:px-6 pt-5 pb-1">
-              <div className="bg-white/80 backdrop-blur-xl border border-black/[0.06] p-3.5 px-5 rounded-2xl shadow-xs flex items-center justify-between font-nyt-sans">
+            <div className="max-w-[1360px] mx-auto px-2 sm:px-4 py-2">
+              <div className="win95-raised p-2 text-xs font-typewriter flex items-center justify-between bg-yellow-100 border border-black">
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-[#0071e3]" />
-                  <span className="text-xs uppercase tracking-wider font-extrabold text-neutral-900">
-                    Filtered by Department: <strong className="text-[#0071e3]">{activeSection}</strong>
-                  </span>
+                  <span className="font-bold text-red-800">*** FILTER APPLIED:</span>
+                  <span>Displaying Section <b>[{activeSection.toUpperCase()}]</b></span>
                 </div>
                 <button
                   onClick={() => setActiveSection('All')}
-                  className="text-xs font-semibold text-neutral-600 hover:text-black flex items-center gap-1.5 bg-black/[0.04] hover:bg-black/[0.08] px-3 py-1.5 rounded-full transition-all cursor-pointer"
+                  className="win95-btn px-2 py-0.5 font-bold text-[#000080]"
                 >
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                  <span>All Stories</span>
+                  [Return to Full Front Page]
                 </button>
               </div>
             </div>

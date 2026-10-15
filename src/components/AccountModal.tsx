@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, User, Check, LogOut, ShieldCheck } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
 
 interface AccountModalProps {
   isOpen: boolean;
@@ -28,89 +28,85 @@ export const AccountModal: React.FC<AccountModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4 font-nyt-sans">
-      <div className="bg-white max-w-sm w-full rounded-3xl shadow-2xl border border-black/10 overflow-hidden">
-        {/* Apple Style Header */}
-        <div className="p-5 border-b border-black/[0.06] flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="font-masthead text-lg text-black">The New York Times</span>
-          </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 font-sans select-none">
+      <div className="win95-raised max-w-sm w-full shadow-2xl p-1 flex flex-col">
+        {/* Title Bar */}
+        <div className="win95-titlebar mb-1">
+          <span>Windows 95 Logon - [NYTimes Account Manager]</span>
           <button
             onClick={onClose}
-            className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-500 hover:text-black transition-colors"
+            className="win95-btn w-4 h-4 flex items-center justify-center font-mono text-[9px] font-bold p-0 leading-none text-black"
           >
-            <X className="w-4 h-4" />
+            ✕
           </button>
         </div>
 
-        <div className="p-6">
+        <div className="p-4 bg-[#c0c0c0] text-xs">
           {currentUser ? (
-            <div className="space-y-4">
-              <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-neutral-800 to-black text-white flex items-center justify-center text-base font-bold shadow-xs">
-                  {currentUser.email.slice(0, 1).toUpperCase()}
-                </div>
-                <div>
-                  <div className="font-apple-display font-bold text-sm text-neutral-900 truncate max-w-[180px]">
-                    {currentUser.email}
-                  </div>
-                  <div className="text-xs text-[#0071e3] font-medium flex items-center gap-1 mt-0.5">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    <span>{currentUser.isSubscribed ? 'Apple News+ Active' : 'Standard Member'}</span>
-                  </div>
+            <div className="space-y-3">
+              <div className="bg-white p-3 border border-black space-y-1 font-typewriter">
+                <div className="font-bold text-black text-sm">AUTHENTICATED USER:</div>
+                <div className="text-[#000080] font-bold">{currentUser.email}</div>
+                <div className="text-green-800 text-[11px]">
+                  Connection: {currentUser.isSubscribed ? 'Unlimited Paid Account' : 'Guest Account'}
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-black/[0.06] space-y-2 text-xs text-neutral-600 font-nyt-sans">
-                <div className="flex justify-between py-1">
-                  <span>Region & Edition</span>
-                  <span className="font-semibold text-neutral-900">U.S. Edition</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span>Device Sync</span>
-                  <span className="font-semibold text-emerald-700">iCloud Synced</span>
-                </div>
+              <div className="flex justify-between items-center text-[10px] text-gray-700">
+                <span>Network Protocol: TCP/IP Winsock</span>
+                <span>Port 80 HTTP</span>
               </div>
 
-              <button
-                onClick={() => {
-                  onLogout();
-                  onClose();
-                }}
-                className="w-full mt-4 py-2.5 rounded-full border border-black/10 hover:bg-black/[0.04] text-neutral-800 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <LogOut className="w-3.5 h-3.5" />
-                <span>Sign Out</span>
-              </button>
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  onClick={() => {
+                    onLogout();
+                    onClose();
+                  }}
+                  className="win95-btn px-3 py-1 font-bold text-red-900"
+                >
+                  [Log Off Network]
+                </button>
+                <button
+                  onClick={onClose}
+                  className="win95-btn px-4 py-1 font-bold"
+                >
+                  OK
+                </button>
+              </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div>
-                <h3 className="font-apple-display font-bold text-xl text-neutral-900 tracking-tight">
-                  Sign in with Apple ID
-                </h3>
-                <p className="text-xs text-neutral-500 mt-1">
-                  Access your reading history, preferences, and saved articles.
-                </p>
-              </div>
-
-              <div>
+                <b className="block mb-1">Type user identification to log on:</b>
+                <span className="text-[11px] text-gray-700 block mb-2">
+                  Enter your Internet address:
+                </span>
                 <input
                   type="email"
                   required
-                  placeholder="name@icloud.com"
+                  placeholder="e.g. user@prodigy.net"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full text-xs p-3 rounded-xl border border-black/10 bg-[#f5f5f7] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/40"
+                  className="win95-sunken w-full p-1.5 font-typewriter text-xs bg-white text-black"
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3 bg-[#1d1d1f] hover:bg-black text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-md transition-colors cursor-pointer"
-              >
-                Continue with Apple
-              </button>
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="win95-btn px-3 py-1 font-bold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="win95-btn px-4 py-1 font-bold text-[#000080]"
+                >
+                  [Log On]
+                </button>
+              </div>
             </form>
           )}
         </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Check, Sparkles } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 
 interface SubscribeModalProps {
   isOpen: boolean;
@@ -15,6 +15,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
   const [selectedPlan, setSelectedPlan] = useState<'basic' | 'all-access'>('all-access');
   const [email, setEmail] = useState('');
   const [isDone, setIsDone] = useState(false);
+  const [baudRate, setBaudRate] = useState('28800');
 
   if (!isOpen) return null;
 
@@ -25,125 +26,95 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
     setTimeout(() => {
       onSuccessSubscribe();
       onClose();
-    }, 1600);
+    }, 1500);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4 font-nyt-sans">
-      <div className="bg-white max-w-md w-full rounded-3xl shadow-2xl border border-black/10 overflow-hidden">
-        {/* Apple Style Header */}
-        <div className="p-6 text-center bg-gradient-to-b from-[#f5f5f7] to-white relative pb-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 font-sans select-none">
+      <div className="win95-raised max-w-md w-full shadow-2xl p-1 flex flex-col">
+        {/* Title Bar */}
+        <div className="win95-titlebar mb-1">
+          <span>Dial-Up Networking Wizard - [NYTimes On The Web]</span>
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-500 hover:text-black transition-colors"
+            className="win95-btn w-4 h-4 flex items-center justify-center font-mono text-[9px] font-bold p-0 leading-none text-black"
           >
-            <X className="w-4 h-4" />
+            ✕
           </button>
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0071e3] to-[#42a5f5] text-white flex items-center justify-center mx-auto mb-3 shadow-sm">
-            <Sparkles className="w-6 h-6" />
-          </div>
-          <span className="font-masthead text-2xl text-black block">The New York Times</span>
-          <h3 className="font-apple-display text-2xl font-extrabold text-[#1d1d1f] tracking-tight mt-1">
-            Reimagined for Apple News+
-          </h3>
-          <p className="text-xs text-neutral-500 mt-1">
-            Unlimited access to world-class journalism, deep analysis, and daily brain puzzles.
-          </p>
         </div>
 
         {/* Content */}
-        <div className="p-6 pt-2">
+        <div className="p-4 bg-[#c0c0c0] text-xs space-y-3">
           {isDone ? (
-            <div className="text-center py-8 space-y-3">
-              <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto">
-                <Check className="w-6 h-6 stroke-[3]" />
+            <div className="bg-white p-4 border border-black text-center space-y-2">
+              <div className="font-pixel text-2xl text-green-700 font-bold">
+                *** CARRIER DETECTED: 28,800 BPS ***
               </div>
-              <h4 className="font-apple-display font-bold text-xl text-neutral-900">
-                Subscription Activated
-              </h4>
-              <p className="text-xs text-neutral-500">
-                Your account is ready. Welcome to complete Apple News+ coverage.
+              <p className="font-typewriter text-xs text-black">
+                Handshake successful! Your NYTimes Dial-Up Subscription is now ACTIVE.
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubscribe} className="space-y-4">
-              {/* Apple Segmented Plan Selection */}
-              <div className="grid grid-cols-2 gap-3">
-                <div
-                  onClick={() => setSelectedPlan('basic')}
-                  className={`p-4 rounded-2xl border cursor-pointer transition-all ${
-                    selectedPlan === 'basic'
-                      ? 'border-[#0071e3] bg-[#0071e3]/5 shadow-xs ring-1 ring-[#0071e3]'
-                      : 'border-black/[0.08] bg-[#f5f5f7] hover:bg-neutral-100'
-                  }`}
-                >
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block">
-                    Basic Digital
-                  </span>
-                  <div className="font-apple-display text-2xl font-black mt-1 text-[#1d1d1f]">
-                    $1<span className="text-xs font-normal text-neutral-500">/wk</span>
-                  </div>
-                  <span className="text-[11px] text-neutral-500 mt-0.5 block">News & Podcasts</span>
-                </div>
-
-                <div
-                  onClick={() => setSelectedPlan('all-access')}
-                  className={`p-4 rounded-2xl border cursor-pointer transition-all relative ${
-                    selectedPlan === 'all-access'
-                      ? 'border-[#0071e3] bg-[#0071e3]/5 shadow-xs ring-1 ring-[#0071e3]'
-                      : 'border-black/[0.08] bg-[#f5f5f7] hover:bg-neutral-100'
-                  }`}
-                >
-                  <div className="absolute -top-2 right-3 bg-[#0071e3] text-white text-[9px] uppercase px-2 py-0.5 rounded-full font-bold tracking-wider">
-                    Apple Pick
-                  </div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#0071e3] block">
-                    All Access
-                  </span>
-                  <div className="font-apple-display text-2xl font-black mt-1 text-[#1d1d1f]">
-                    $2<span className="text-xs font-normal text-neutral-500">/wk</span>
-                  </div>
-                  <span className="text-[11px] text-neutral-500 mt-0.5 block">Full News + Puzzles</span>
+            <form onSubmit={handleSubscribe} className="space-y-3">
+              <div className="bg-white p-3 border border-black space-y-1">
+                <b className="font-typewriter text-xs text-[#000080] block">
+                  SELECT DIAL-UP SUBSCRIPTION PACKAGE:
+                </b>
+                <div className="space-y-1 pt-1 font-typewriter">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="plan"
+                      checked={selectedPlan === 'basic'}
+                      onChange={() => setSelectedPlan('basic')}
+                    />
+                    <span>Standard Access ($1.00/wk) · Unlimited Front Page & Archive</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer font-bold text-[#000080]">
+                    <input
+                      type="radio"
+                      name="plan"
+                      checked={selectedPlan === 'all-access'}
+                      onChange={() => setSelectedPlan('all-access')}
+                    />
+                    <span>All-Access Power Plan ($2.00/wk) · News + Puzzles + RealAudio</span>
+                  </label>
                 </div>
               </div>
 
-              {/* Feature Checkmarks */}
-              <div className="space-y-2 text-xs text-neutral-700 pt-1">
-                <div className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-[#0071e3] shrink-0" />
-                  <span>Unlimited stories across iPhone, iPad, Mac, and Web</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-[#0071e3] shrink-0" />
-                  <span>Curated audio editions and narrator voice journalism</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-[#0071e3] shrink-0" />
-                  <span>Interactive Wordle, Connections, The Mini, and Spelling Bee</span>
-                </div>
-              </div>
-
-              <div className="pt-2">
+              {/* Modem Configuration */}
+              <div className="space-y-1">
+                <label className="font-bold block">User Account (E-mail):</label>
                 <input
                   type="email"
                   required
-                  placeholder="Enter your Apple ID email"
+                  placeholder="e.g. reader@pipeline.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full text-xs p-3 rounded-xl border border-black/10 bg-[#f5f5f7] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/40"
+                  className="win95-sunken w-full p-1.5 font-typewriter text-xs bg-white text-black"
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3 bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-md transition-all cursor-pointer"
-              >
-                Subscribe with Apple ID
-              </button>
+              <div className="flex justify-between items-center text-[11px] text-gray-700">
+                <span>Modem Port: COM2 (USRobotics Sportster 28.8k)</span>
+                <span className="font-mono text-green-800">STATUS: READY</span>
+              </div>
 
-              <p className="text-[10px] text-neutral-400 text-center">
-                One-tap cancel via Account Settings. Renews at standard terms.
-              </p>
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="win95-btn px-3 py-1 font-bold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="win95-btn px-4 py-1 font-bold text-[#000080]"
+                >
+                  [Connect & Dial]
+                </button>
+              </div>
             </form>
           )}
         </div>

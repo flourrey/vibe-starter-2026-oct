@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { X, RotateCcw, Award } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import { WORDLE_SOLUTION, WORDLE_VALID_WORDS } from '../../data/gamesData';
 
 interface WordleModalProps {
@@ -36,7 +36,7 @@ export const WordleModal: React.FC<WordleModalProps> = ({ isOpen, onClose }) => 
   const handleEnter = useCallback(() => {
     if (isGameOver) return;
     if (currentGuess.length !== 5) {
-      showToast('Not enough letters');
+      showToast('Error: Word must be 5 characters');
       return;
     }
 
@@ -47,11 +47,11 @@ export const WordleModal: React.FC<WordleModalProps> = ({ isOpen, onClose }) => 
     if (currentGuess === solution) {
       setIsGameOver(true);
       setHasWon(true);
-      showToast('Splendid! You guessed today’s word!');
+      showToast('SUCCESS! Target word resolved!');
     } else if (nextGuesses.length >= 6) {
       setIsGameOver(true);
       setHasWon(false);
-      showToast(`Game Over! The word was ${solution}`);
+      showToast(`FAILED: Solution was ${solution}`);
     }
   }, [isGameOver, currentGuess, guesses, solution]);
 
@@ -87,150 +87,115 @@ export const WordleModal: React.FC<WordleModalProps> = ({ isOpen, onClose }) => 
   ];
 
   const getTileStatus = (char: string, index: number, guess: string) => {
-    if (guess[index] === solution[index]) return 'bg-emerald-600 text-white border-emerald-600 shadow-xs';
-    if (solution.includes(char)) return 'bg-amber-500 text-white border-amber-500 shadow-xs';
-    return 'bg-neutral-600 text-white border-neutral-600';
-  };
-
-  const getKeyStatus = (key: string) => {
-    let status = 'bg-[#f5f5f7] hover:bg-neutral-200 text-neutral-800';
-    for (const guess of guesses) {
-      for (let i = 0; i < 5; i++) {
-        if (guess[i] === key) {
-          if (solution[i] === key) {
-            return 'bg-emerald-600 text-white';
-          } else if (solution.includes(key)) {
-            status = 'bg-amber-500 text-white';
-          } else if (status !== 'bg-amber-500 text-white') {
-            status = 'bg-neutral-500 text-white';
-          }
-        }
-      }
-    }
-    return status;
+    if (guess[index] === solution[index]) return 'bg-[#008000] text-white border-2 border-black font-bold';
+    if (solution.includes(char)) return 'bg-[#808000] text-white border-2 border-black font-bold';
+    return 'bg-[#404040] text-white border-2 border-black font-bold';
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4">
-      <div className="bg-white/95 backdrop-blur-2xl max-w-md w-full rounded-3xl shadow-2xl border border-black/10 overflow-hidden flex flex-col max-h-[92vh] font-nyt-sans">
-        {/* Apple Style Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-black/[0.06]">
-          <div className="flex items-center gap-2.5">
-            <span className="w-7 h-7 bg-emerald-600 text-white text-xs font-bold rounded-xl flex items-center justify-center shadow-xs">
-              W
-            </span>
-            <div>
-              <h3 className="font-apple-display font-extrabold text-lg tracking-tight text-[#1d1d1f]">
-                Wordle
-              </h3>
-              <span className="text-[10px] text-neutral-400 font-medium">Daily Puzzle No. 1214</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-1.5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 font-sans select-none">
+      <div className="win95-raised max-w-md w-full shadow-2xl p-1 flex flex-col">
+        {/* Title Bar */}
+        <div className="win95-titlebar mb-1">
+          <span>WORDLE.EXE - [16-Bit Word Guess Game]</span>
+          <div className="flex items-center gap-1">
             <button
               onClick={resetGame}
-              title="Reset Puzzle"
-              className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-600 hover:text-black transition-colors"
+              className="win95-btn px-1 text-[9px] font-bold text-black"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              [Restart]
             </button>
             <button
               onClick={onClose}
-              className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-600 hover:text-black transition-colors"
+              className="win95-btn w-4 h-4 flex items-center justify-center font-mono text-[9px] font-bold p-0 leading-none text-black"
             >
-              <X className="w-4 h-4" />
+              ✕
             </button>
           </div>
         </div>
 
-        {/* Message Toast */}
+        {/* Menu Strip */}
+        <div className="bg-[#c0c0c0] px-2 py-0.5 border-b border-[#808080] text-xs flex gap-3 text-black">
+          <span className="hover:underline cursor-pointer">Game</span>
+          <span className="hover:underline cursor-pointer">Dictionary</span>
+          <span className="hover:underline cursor-pointer">Help</span>
+        </div>
+
+        {/* Toast / Message Box */}
         {message && (
-          <div className="bg-black/90 backdrop-blur-md text-white text-xs font-medium px-4 py-2 mx-auto mt-2 rounded-full shadow-lg text-center animate-bounce">
+          <div className="bg-yellow-100 border border-black text-black text-xs font-typewriter font-bold px-3 py-1 m-2 text-center">
             {message}
           </div>
         )}
 
-        {/* Wordle Grid */}
-        <div className="p-4 flex-1 flex flex-col items-center justify-center overflow-y-auto">
-          <div className="grid grid-rows-6 gap-2 w-64 max-w-full">
-            {Array.from({ length: 6 }).map((_, rowIndex) => {
-              const isCurrentRow = rowIndex === guesses.length;
-              const guess = guesses[rowIndex] || '';
-              return (
-                <div key={rowIndex} className="grid grid-cols-5 gap-2">
-                  {Array.from({ length: 5 }).map((_, colIndex) => {
-                    let char = '';
-                    let statusClasses = 'border border-black/[0.08] text-neutral-800 bg-[#f5f5f7]';
+        {/* Game Grid in Sunken Frame */}
+        <div className="p-3 bg-[#c0c0c0] flex flex-col items-center">
+          <div className="win95-sunken p-3 bg-[#000000] w-64">
+            <div className="grid grid-rows-6 gap-1.5">
+              {Array.from({ length: 6 }).map((_, rowIndex) => {
+                const isCurrentRow = rowIndex === guesses.length;
+                const guess = guesses[rowIndex] || '';
+                return (
+                  <div key={rowIndex} className="grid grid-cols-5 gap-1.5">
+                    {Array.from({ length: 5 }).map((_, colIndex) => {
+                      let char = '';
+                      let statusClasses = 'border border-gray-600 text-green-400 bg-black font-pixel text-2xl';
 
-                    if (rowIndex < guesses.length) {
-                      char = guess[colIndex] || '';
-                      statusClasses = getTileStatus(char, colIndex, guess);
-                    } else if (isCurrentRow) {
-                      char = currentGuess[colIndex] || '';
-                      if (char) {
-                        statusClasses = 'border-2 border-neutral-900 text-neutral-900 bg-white scale-105';
+                      if (rowIndex < guesses.length) {
+                        char = guess[colIndex] || '';
+                        statusClasses = getTileStatus(char, colIndex, guess) + ' font-pixel text-2xl';
+                      } else if (isCurrentRow) {
+                        char = currentGuess[colIndex] || '';
+                        if (char) {
+                          statusClasses = 'border-2 border-yellow-400 text-yellow-300 bg-black font-pixel text-2xl';
+                        }
                       }
-                    }
 
-                    return (
-                      <div
-                        key={colIndex}
-                        className={`aspect-square rounded-xl flex items-center justify-center font-bold text-xl uppercase transition-all duration-200 ${statusClasses}`}
-                      >
-                        {char}
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
-
-          {isGameOver && (
-            <div className="mt-4 p-4 bg-[#f5f5f7] rounded-2xl text-center w-full max-w-xs border border-black/[0.05]">
-              <div className="flex items-center justify-center gap-1.5 font-bold text-sm mb-1 text-neutral-900">
-                <Award className="w-4 h-4 text-emerald-600" />
-                <span>{hasWon ? 'Splendid!' : 'Next time!'}</span>
-              </div>
-              <p className="text-xs text-neutral-600">
-                The word was <strong className="text-black font-semibold">{solution}</strong>.
-              </p>
-              <button
-                onClick={resetGame}
-                className="mt-2 text-xs bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold py-1.5 px-4 rounded-full transition-all cursor-pointer shadow-xs"
-              >
-                Play Again
-              </button>
+                      return (
+                        <div
+                          key={colIndex}
+                          className={`aspect-square flex items-center justify-center uppercase select-none ${statusClasses}`}
+                        >
+                          {char}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
             </div>
-          )}
+          </div>
         </div>
 
-        {/* On-Screen Keyboard */}
-        <div className="p-3 border-t border-black/[0.04] bg-[#f5f5f7]/70">
-          <div className="flex flex-col gap-1.5 max-w-md mx-auto">
+        {/* Keyboard in 90s Bevel Buttons */}
+        <div className="p-2 bg-[#c0c0c0] border-t border-[#808080]">
+          <div className="flex flex-col gap-1 max-w-sm mx-auto">
             {keys.map((row, rIdx) => (
               <div key={rIdx} className="flex justify-center gap-1">
-                {row.map((k) => {
-                  const isSpecial = k === 'ENTER' || k === 'DEL';
-                  return (
-                    <button
-                      key={k}
-                      onClick={() => {
-                        if (k === 'ENTER') handleEnter();
-                        else if (k === 'DEL') handleDelete();
-                        else handleCharInput(k);
-                      }}
-                      className={`h-11 rounded-xl text-xs font-bold transition-all select-none shadow-xs cursor-pointer ${
-                        isSpecial ? 'px-3 text-[10px]' : 'flex-1 min-w-[28px]'
-                      } ${getKeyStatus(k)}`}
-                    >
-                      {k}
-                    </button>
-                  );
-                })}
+                {row.map((k) => (
+                  <button
+                    key={k}
+                    onClick={() => {
+                      if (k === 'ENTER') handleEnter();
+                      else if (k === 'DEL') handleDelete();
+                      else handleCharInput(k);
+                    }}
+                    className={`win95-btn h-8 font-mono font-bold text-xs ${
+                      k === 'ENTER' || k === 'DEL' ? 'px-2 text-[10px]' : 'flex-1 min-w-[24px]'
+                    }`}
+                  >
+                    {k}
+                  </button>
+                ))}
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Status Bar */}
+        <div className="win95-sunken px-2 py-0.5 text-[10px] font-typewriter text-black bg-[#c0c0c0] flex justify-between">
+          <span>Tries: {guesses.length}/6</span>
+          <span>Status: {isGameOver ? (hasWon ? 'SOLVED' : 'GAME OVER') : 'IN PROGRESS'}</span>
         </div>
       </div>
     </div>

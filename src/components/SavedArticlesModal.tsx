@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Bookmark, Trash2, ArrowRight } from 'lucide-react';
+import { Bookmark, Trash2 } from 'lucide-react';
 import { Article } from '../types/news';
 
 interface SavedArticlesModalProps {
@@ -24,46 +24,38 @@ export const SavedArticlesModal: React.FC<SavedArticlesModalProps> = ({
   const savedArticles = articles.filter((a) => savedArticleIds.includes(a.id));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4">
-      <div className="bg-white/95 backdrop-blur-2xl max-w-lg w-full rounded-3xl shadow-2xl border border-black/10 overflow-hidden flex flex-col max-h-[85vh] font-nyt-sans">
-        {/* Apple Style Header */}
-        <div className="p-5 border-b border-black/[0.06] flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#0071e3]/10 text-[#0071e3] flex items-center justify-center">
-              <Bookmark className="w-4 h-4 fill-current" />
-            </div>
-            <div>
-              <h3 className="font-apple-display font-bold text-lg text-neutral-900">
-                Reading List
-              </h3>
-              <p className="text-[11px] text-neutral-400">
-                {savedArticles.length} offline {savedArticles.length === 1 ? 'story' : 'stories'} saved
-              </p>
-            </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 font-sans select-none">
+      <div className="win95-raised max-w-lg w-full shadow-2xl p-1 flex flex-col max-h-[85vh]">
+        {/* Windows 95 Title Bar */}
+        <div className="win95-titlebar mb-1">
+          <div className="flex items-center gap-1.5">
+            <Bookmark className="w-3.5 h-3.5 text-yellow-300" />
+            <span>Netscape Navigator - [Bookmarks / Hotlist Manager]</span>
           </div>
           <button
             onClick={onClose}
-            className="w-7 h-7 rounded-full bg-black/[0.05] hover:bg-black/[0.09] flex items-center justify-center text-neutral-500 hover:text-black transition-colors"
+            className="win95-btn w-4 h-4 flex items-center justify-center font-mono text-[9px] font-bold p-0 leading-none text-black"
           >
-            <X className="w-4 h-4" />
+            ✕
           </button>
         </div>
 
-        {/* List */}
-        <div className="p-4 flex-1 overflow-y-auto space-y-2.5">
+        {/* Directory Path Ribbon */}
+        <div className="p-2 bg-[#c0c0c0] border-b border-[#808080] text-xs font-typewriter">
+          <span>Folder: C:\NETSCAPE\BOOKMARK.HTM ({savedArticles.length} entries)</span>
+        </div>
+
+        {/* Bookmarks List */}
+        <div className="p-3 bg-white flex-1 overflow-y-auto space-y-2 font-serif">
           {savedArticles.length === 0 ? (
-            <div className="text-center py-12 text-neutral-400">
-              <Bookmark className="w-8 h-8 mx-auto mb-2 opacity-30" />
-              <p className="text-sm font-medium">Your Reading List is empty</p>
-              <p className="text-xs text-neutral-400 mt-1">
-                Save stories to read anytime, even while disconnected.
-              </p>
+            <div className="text-center py-8 text-gray-500 font-typewriter text-xs">
+              [EMPTY HOTLIST] No articles bookmarked. Use "Add to Hotlist" on any story.
             </div>
           ) : (
             savedArticles.map((article) => (
               <div
                 key={article.id}
-                className="p-4 rounded-2xl bg-[#f5f5f7]/80 hover:bg-white hover:shadow-xs border border-black/[0.04] transition-all flex items-start justify-between gap-3 group"
+                className="p-2 border border-gray-300 bg-gray-50 flex items-start justify-between gap-2 hover:bg-yellow-50"
               >
                 <div
                   className="flex-1 cursor-pointer"
@@ -72,30 +64,37 @@ export const SavedArticlesModal: React.FC<SavedArticlesModalProps> = ({
                     onClose();
                   }}
                 >
-                  <span className="text-[10px] uppercase font-bold text-[#0071e3] tracking-wider">
-                    {article.section}
+                  <span className="font-typewriter text-[10px] text-red-800 font-bold block">
+                    [{article.section.toUpperCase()}]
                   </span>
-                  <h4 className="font-apple-display font-bold text-base leading-snug text-neutral-900 group-hover:text-[#0071e3] transition-colors mt-0.5">
+                  <h4 className="retro-link text-sm font-bold font-headline leading-tight mt-0.5">
                     {article.title}
                   </h4>
-                  <p className="text-xs text-neutral-500 line-clamp-1 mt-1">
-                    {article.summary}
-                  </p>
-                  <div className="text-[11px] text-neutral-400 mt-2">
+                  <div className="text-[10px] font-typewriter text-gray-500 mt-1">
                     {article.readTime} · By {article.byline}
                   </div>
                 </div>
 
                 <button
                   onClick={() => onRemoveSave(article.id)}
-                  title="Remove from reading list"
-                  className="p-1.5 rounded-full text-neutral-400 hover:text-red-600 hover:bg-red-50 transition-colors shrink-0"
+                  title="Remove bookmark"
+                  className="win95-btn px-1.5 py-0.5 text-[10px] text-red-700 font-bold shrink-0"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  [Delete]
                 </button>
               </div>
             ))
           )}
+        </div>
+
+        {/* Footer */}
+        <div className="p-2 bg-[#c0c0c0] border-t border-[#808080] flex justify-end gap-2 text-xs">
+          <button
+            onClick={onClose}
+            className="win95-btn px-4 py-1 font-bold text-black"
+          >
+            [Close Manager]
+          </button>
         </div>
       </div>
     </div>
